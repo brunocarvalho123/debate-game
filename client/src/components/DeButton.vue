@@ -1,5 +1,5 @@
 <template>
-  <div class="button-div">
+  <div class="button-div" @click="pressed">
     <span class="label">{{label}}</span>
   </div>
 </template>
