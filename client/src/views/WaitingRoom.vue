@@ -190,7 +190,7 @@
     methods: {
       beginGame: function() {
         // debugger; // eslint-disable-line no-debugger
-        this.$router.push(`waiting_room/${this.modules.indexOf(this.selectedModule)}`);
+        this.$router.push('/slides');
       }
     }
   }
