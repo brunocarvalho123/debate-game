@@ -24,6 +24,16 @@ const routes = [
     path: '/slides',
     name: 'Slides',
     component: () => import(/* webpackChunkName: "about" */ '../views/Slides.vue')
+  },
+  {
+    path: '/game_instructions',
+    name: 'GameInstructions',
+    component: () => import(/* webpackChunkName: "about" */ '../views/GameInstructions.vue')
+  },
+  {
+    path: '/game_groups',
+    name: 'GameGroups',
+    component: () => import(/* webpackChunkName: "about" */ '../views/GameGroups.vue')
   }
 ]
 

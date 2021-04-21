@@ -8,16 +8,7 @@
         <span class="icon-text">Início</span>
       </div>
       <div class="top-label">
-        <v-icon size="2.5vw" style="margin-top: -5px;" class="d-icon" @click="previousSlide">
-          mdi-arrow-left-circle-outline
-        </v-icon>
-        Slide {{currentSlide}}/{{totalSlides}}
-        <v-icon v-if="currentSlide < totalSlides" size="2.5vw" style="margin-top: -5px;" class="d-icon" @click="nextSlide">
-          mdi-arrow-right-circle-outline
-        </v-icon>
-        <span class="continue-button" v-else @click="nextPage">
-          Continuar
-        </span>
+        Atividade prática - Explicação geral
       </div>
       <div class="top-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
@@ -26,7 +17,17 @@
         <span class="icon-text">Ajuda</span>
       </div>
     </div>
-
+    <div class="mid-div">
+      <div class="text-grid">
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+      </div>
+      <DeButton class="button" label="Começar jogo" @pressed="startGame"></DeButton>
+    </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
 </template>
@@ -68,6 +69,11 @@
     cursor: pointer;
     color: var(--app-accent);
   }
+  .mid-div {
+    display: grid;
+    justify-content: center;
+    margin: auto;
+  }
   .continue-button {
     margin-left: 1vh;
     padding: 5px;
@@ -77,22 +83,34 @@
     color: var(--app-accent);
     text-decoration: underline;
   }
+  .text-grid {
+    margin-top: -10vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .text-cell {
+    color: var(--app-main-blue);
+    font-size: 1.2vw;
+    font-weight: 350;
+    padding-bottom: 6vh;
+    padding-left: 4vw;
+    padding-right: 4vw;
+  }
 </style>
 
 <script>
-  import Footer from '@/components/Footer.vue'
+  import Footer from '@/components/Footer.vue';
+  import DeButton from '@/components/DeButton.vue';
 
   export default {
-    name: 'Slides',
+    name: 'GameInstructions',
     components: {
-     Footer
+     Footer,
+     DeButton
     },
     data: () => ({
       isMod: true,
-      infoDialog: true,
       selectedModule: undefined,
-      currentSlide: 1,
-      totalSlides: 10,
       items: [{id:0, name:'Pedro'},
               {id:1, name:'Mario'},
               {id:2, name:'Joana'},
@@ -125,19 +143,8 @@
               {id:3, name:'Antunes'}]
     }),
     methods: {
-      previousSlide: function() {
-        if (this.currentSlide > 1) this.currentSlide--;
-        // debugger; // eslint-disable-line no-debugger
-        console.log('TODO');
-      },
-      nextSlide: function() {
-        if (this.currentSlide < this.totalSlides) this.currentSlide++;
-        // debugger; // eslint-disable-line no-debugger
-        console.log('TODO');
-      },
-      nextPage: function() {
-        // debugger; // eslint-disable-line no-debugger
-        this.$router.push('/game_instructions');
+      startGame: function() {
+        this.$router.push('/game_groups');
       }
     }
   }
