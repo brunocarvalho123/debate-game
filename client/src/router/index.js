@@ -34,6 +34,11 @@ const routes = [
     path: '/game_groups',
     name: 'GameGroups',
     component: () => import(/* webpackChunkName: "about" */ '../views/GameGroups.vue')
+  },
+  {
+    path: '/group_info',
+    name: 'GroupInfo',
+    component: () => import(/* webpackChunkName: "about" */ '../views/GroupInfo.vue')
   }
 ]
 

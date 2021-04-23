@@ -3,12 +3,12 @@
     <div class="top-div">
       <div class="top-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-arrow-left-circle-outline
+          mdi-home-outline
         </v-icon>
-        <span class="icon-text">Explicação</span>
+        <span class="icon-text">Início</span>
       </div>
       <div class="top-label">
-        Formação de equipas
+        <ProgressHeader step=0></ProgressHeader>
       </div>
       <div class="top-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
@@ -18,27 +18,15 @@
       </div>
     </div>
     <div class="mid-div">
-      <div class="group-grid">
-        <div v-for="groups in matches" v-bind:key="groups.id" class="match-cell">
-          <div class="group-cell">
-            <div class="group-header">{{groups[0].name}}</div>
-            <div class="group-body">
-              <span v-for="member in groups[0].members" v-bind:key="member.id" class="member-span">
-                {{items[member].name}}
-              </span>
-            </div>
-            <div class="vs-sign">VS</div>
-            <div class="group-header">{{groups[1].name}}</div>
-            <div class="group-body">
-              <span v-for="member in groups[1].members" v-bind:key="member.id" class="member-span">
-                {{items[member].name}}
-              </span>
-            </div>
-          </div>
-        </div>
-
+      <div class="text-grid">
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
       </div>
-      <DeButton class="button" label="Continuar" @pressed="goToGroups"></DeButton>
+      <DeButton class="button" label="Começar jogo" @pressed="startGame"></DeButton>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
@@ -95,73 +83,36 @@
     color: var(--app-accent);
     text-decoration: underline;
   }
-  .group-grid {
+  .text-grid {
     margin-top: -10vh;
-    display: inline-grid;
-    grid-auto-flow: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
-  .group-cell {
+  .text-cell {
     color: var(--app-main-blue);
     font-size: 1.2vw;
     font-weight: 350;
     padding-bottom: 6vh;
     padding-left: 4vw;
     padding-right: 4vw;
-    width: 30vw;
-
-  }
-  .group-header {
-    background-color: var(--app-secondary-blue);
-    color: var(--app-main-blue);
-    border-radius: 10px 10px 0px 0px;
-    border: 1px solid var(--app-main-blue);
-    text-align: center;
-    font-size: 1.6vw;
-    font-weight: 450;
-    padding-top: 0.5vh;
-    padding-bottom: 0.5vh;
-  }
-  .group-body {
-    border-radius: 0px 0px 10px 10px;
-    border: 1px solid var(--app-main-blue);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    font-size: 1.2vw;
-    font-weight: 450;
-    justify-content: center;
-    justify-items: center;
-    align-content: center;
-  }
-  .member-span {
-    padding: 0.8vw 0vw 0.8vw 0vw;
-  }
-  .vs-sign {
-    color: var(--app-accent);
-    font-size: 1.8vw;
-    font-weight: 550;
-    padding-top: 1.5vh;
-    padding-bottom: 1.5vh;
-    text-align: center;
   }
 </style>
 
 <script>
   import Footer from '@/components/Footer.vue';
   import DeButton from '@/components/DeButton.vue';
+  import ProgressHeader from '@/components/ProgressHeader.vue';
 
   export default {
-    name: 'GameGroups',
+    name: 'GameInstructions',
     components: {
      Footer,
-     DeButton
+     DeButton,
+     ProgressHeader
     },
     data: () => ({
       isMod: true,
       selectedModule: undefined,
-      matches: [[{id:0, name:'Grupo 1', members:[0,1,2,3,4]}, {id:1, name:'Grupo 2', members:[5,6,7,8,9]}],
-               [{id:2, name:'Grupo 3', members:[10,11,12,13,14]}, {id:3, name:'Grupo 4', members:[15,16,17,18,19]}],
-               [{id:4, name:'Grupo 5', members:[20,21,22,23,24]}, {id:5, name:'Grupo 6', members:[25,26,27,28,29]}]
-              ],
       items: [{id:0, name:'Russell'},
               {id:1, name:'Cabrera'},
               {id:2, name:'Newton'},
@@ -194,8 +145,8 @@
               {id:29, name:'Wilkerson'}]
     }),
     methods: {
-      goToGroups: function() {
-        this.$router.push('/group_info');
+      startGame: function() {
+        this.$router.push('/game_groups');
       }
     }
   }

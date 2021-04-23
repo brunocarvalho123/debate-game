@@ -3,12 +3,12 @@
     <div class="slot first-slot">
       {{label}}
     </div>
-    <template v-if="items.length > 9">
+    <template v-if="items.length > 8">
       <div v-for="nr in oneToEight" v-bind:key="nr" class="slot mid-slot">
         {{items[nr].name}}
       </div>
       <div class="slot last-slot">
-        + {{items.length - 9}}
+        + {{items.length - 8}}
       </div>
     </template>
     <template v-else>
@@ -52,7 +52,6 @@
   }
   .last-slot {
     border-width: 0px;
-    padding-left: 3.1vw;
   }
 </style>
 
@@ -61,7 +60,7 @@
     name: 'Footer',
     props: ['items','label'],
     data: () => ({
-      oneToEight: [0,1,2,3,4,5,6,7,8]
+      oneToEight: [0,1,2,3,4,5,6,7]
     })
   }
 </script>
