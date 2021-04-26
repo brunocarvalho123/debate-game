@@ -32,7 +32,7 @@
         </div>
         <div class="code-text">
           <span>Código de acesso:</span><br>
-          <span style="color: var(--app-accent)">AWXHGTYI</span>
+          <span style="color: var(--app-accent)">{{roomId}}</span>
         </div>
         <div class="links-row">
           <span class="links"><v-icon size="1.7vw" class="b-icon" color="var(--app-main-blue)">mdi-link</v-icon> Obter link partilhavel</span>
@@ -146,46 +146,55 @@
 
 <script>
   import DeButton from '@/components/DeButton.vue'
+  import { bus } from '../main';
 
   export default {
     name: 'WaitingRoom',
     components: {
      DeButton
     },
+    mounted() {
+      bus.$on('changeIt', (data) => {
+        debugger; // eslint-disable-line no-debugger
+        console.log(data);
+      })
+    },
     data: () => ({
       isMod: true,
-      infoDialog: true,
+      infoDialog: false,
+      roomId: '',
       selectedModule: undefined,
-      items: [{id:0, name:'Russell'},
-              {id:1, name:'Cabrera'},
-              {id:2, name:'Newton'},
-              {id:3, name:'Mercer'},
-              {id:4, name:'Hobbs'},
-              {id:5, name:'Alvarez'},
-              {id:6, name:'Hicks'},
-              {id:7, name:'Puckett'},
-              {id:8, name:'Mohammed'},
-              {id:9, name:'Mullins'},
-              {id:10, name:'Robson'},
-              {id:11, name:'Dennis'},
-              {id:12, name:'Montes'},
-              {id:13, name:'Whittle'},
-              {id:14, name:'Kaur'},
-              {id:15, name:'Milne'},
-              {id:16, name:'Oneal'},
-              {id:17, name:'Rogers'},
-              {id:18, name:'Stewart'},
-              {id:19, name:'Kent'},
-              {id:20, name:'Klein'},
-              {id:21, name:'Rivers'},
-              {id:22, name:'Keeling'},
-              {id:23, name:'Beasley'},
-              {id:24, name:'Markham'},
-              {id:25, name:'Wolf'},
-              {id:26, name:'Crawford'},
-              {id:27, name:'Chang'},
-              {id:28, name:'Henry'},
-              {id:29, name:'Wilkerson'}]
+      items: []
+      // items: [{id:0, name:'Russell'},
+      //         {id:1, name:'Cabrera'},
+      //         {id:2, name:'Newton'},
+      //         {id:3, name:'Mercer'},
+      //         {id:4, name:'Hobbs'},
+      //         {id:5, name:'Alvarez'},
+      //         {id:6, name:'Hicks'},
+      //         {id:7, name:'Puckett'},
+      //         {id:8, name:'Mohammed'},
+      //         {id:9, name:'Mullins'},
+      //         {id:10, name:'Robson'},
+      //         {id:11, name:'Dennis'},
+      //         {id:12, name:'Montes'},
+      //         {id:13, name:'Whittle'},
+      //         {id:14, name:'Kaur'},
+      //         {id:15, name:'Milne'},
+      //         {id:16, name:'Oneal'},
+      //         {id:17, name:'Rogers'},
+      //         {id:18, name:'Stewart'},
+      //         {id:19, name:'Kent'},
+      //         {id:20, name:'Klein'},
+      //         {id:21, name:'Rivers'},
+      //         {id:22, name:'Keeling'},
+      //         {id:23, name:'Beasley'},
+      //         {id:24, name:'Markham'},
+      //         {id:25, name:'Wolf'},
+      //         {id:26, name:'Crawford'},
+      //         {id:27, name:'Chang'},
+      //         {id:28, name:'Henry'},
+      //         {id:29, name:'Wilkerson'}]
     }),
     methods: {
       beginGame: function() {

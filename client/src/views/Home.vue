@@ -10,7 +10,7 @@
           Criar novo jogo
         </span>
       </div>
-      <div class="main-button join-game-button">
+      <div class="main-button join-game-button" @click="joinGame()">
         <span>
           <v-icon size="2.5vw" class="b-icon" color="var(--app-main-blue)">
             mdi-keyboard
@@ -78,18 +78,15 @@
 
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-
-export default {
-  name: 'Home',
-  components: {
-    // HelloWorld
-  },
-  methods: {
-    newGame: function() {
-      this.$router.push(`new_game`);
+  export default {
+    name: 'Home',
+    methods: {
+      newGame: function() {
+        this.$router.push(`new_game`);
+      },
+      joinGame: function() {
+        this.$router.push(`waiting_room/1`);
+      }
     }
-  }
 }
 </script>

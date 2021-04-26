@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="mid-div">
-      <v-select class="module-select" v-model="selectedModule" :items="modules" label="Módulos disponíveis" outlined></v-select>
+      <v-select class="module-select" v-model="selectedModule" :items="modules" label="Selecione o módulo" outlined></v-select>
       <DeButton class="button" label="Criar jogo" @pressed="createRoom"></DeButton>
     </div>
   </div>
@@ -69,9 +69,20 @@
       modules: ['Integrity - Animal Experimentation', 'Modulo 2', 'Modulo 3', 'Modulo 4']
     }),
     methods: {
+      makeId(length) {
+        let result             = [];
+        const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        for ( let i = 0; i < length; i++ ) {
+          result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+        }
+        return result.join('');
+      },
       createRoom: function() {
         // debugger; // eslint-disable-line no-debugger
-        this.$router.push(`waiting_room/${this.modules.indexOf(this.selectedModule)}`);
+        const roomId = this.makeId(6);
+        this.sendMessage(`create:${roomId}:${this.modules.indexOf(this.selectedModule)}`);
+        this.$router.push(`waiting_room/${roomId}`);
       }
     }
   }

@@ -8,7 +8,7 @@
         <span class="icon-text">Início</span>
       </div>
       <div class="top-label">
-        <ProgressHeader step=0></ProgressHeader>
+        <ProgressHeader step=1></ProgressHeader>
       </div>
       <div class="top-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
@@ -19,14 +19,14 @@
     </div>
     <div class="mid-div">
       <div class="text-grid">
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <h2>Dilema</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Metus aliquam eleifend mi in nulla. Lacus sed viverra tellus in hac habitasse platea dictumst. Consectetur purus ut faucibus pulvinar elementum integer enim neque volutpat. Ut eu sem integer vitae justo eget magna fermentum. Nulla aliquet enim tortor at auctor urna. Consequat semper viverra nam libero justo laoreet. Lacus laoreet non curabitur gravida arcu ac tortor dignissim. Dolor sed viverra ipsum nunc aliquet bibendum enim facilisis gravida. Molestie at elementum eu facilisis sed odio morbi quis. In iaculis nunc sed augue lacus viverra vitae congue eu. Dictum at tempor commodo ullamcorper a. Fermentum et sollicitudin ac orci. Risus viverra adipiscing at in. A diam maecenas sed enim ut sem viverra aliquet eget. Eget gravida cum sociis natoque penatibus et.</p>
+        <p>Nulla pellentesque dignissim enim sit amet venenatis urna. Sagittis nisl rhoncus mattis rhoncus urna. Pellentesque sit amet porttitor eget dolor morbi non arcu. Vestibulum lorem sed risus ultricies tristique. Sapien pellentesque habitant morbi tristique senectus. Non quam lacus suspendisse faucibus interdum posuere lorem. Nec dui nunc mattis enim ut. Ac turpis egestas sed tempus urna et. Ac feugiat sed lectus vestibulum mattis ullamcorper velit. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Auctor elit sed vulputate mi sit amet. Ut sem nulla pharetra diam.</p>
       </div>
-      <DeButton class="button" label="Começar jogo" @pressed="startGame"></DeButton>
+      <div class="bottom-stuff">
+        <v-textarea label="Como é que tu resolverias este problema?" no-resize outlined hide-details v-model="solution"></v-textarea>
+        <DeButton class="button" label="Enviar" @pressed="startGame"></DeButton>
+      </div>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
@@ -84,17 +84,17 @@
     text-decoration: underline;
   }
   .text-grid {
-    margin-top: -10vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-  .text-cell {
     color: var(--app-main-blue);
-    font-size: 1.2vw;
-    font-weight: 350;
-    padding-bottom: 6vh;
-    padding-left: 4vw;
-    padding-right: 4vw;
+    font-size: 1.1vw;
+    font-weight: 450;
+    padding: 0vw 15vw 5vw 15vw;
+  }
+  .bottom-stuff {
+    display:flex;
+    padding: 0vw 20vw 5vw 20vw;
+  }
+  .button {
+    margin-left: 3vw;
   }
 </style>
 
@@ -104,7 +104,7 @@
   import ProgressHeader from '@/components/ProgressHeader.vue';
 
   export default {
-    name: 'GameInstructions',
+    name: 'IndividualSolution',
     components: {
      Footer,
      DeButton,
@@ -113,6 +113,7 @@
     data: () => ({
       isMod: true,
       selectedModule: undefined,
+      solution: '',
       items: [{id:0, name:'Russell'},
               {id:1, name:'Cabrera'},
               {id:2, name:'Newton'},
@@ -146,7 +147,8 @@
     }),
     methods: {
       startGame: function() {
-        this.$router.push('/groups/individual_solution');
+        // debugger; // eslint-disable-line no-debugger
+        this.$router.push('/game_groups');
       }
     }
   }

@@ -1,0 +1,30 @@
+{
+  "name": "debate-game",
+  "version": "1.0.0",
+  "description": "Small prototype for a university project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "node server.js",
+    "client": "npm run serve --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install-client": "cd client && npm install",
+    "build-client": "cd client && npm run build",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run install-client && npm run build-client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brunocarvalho123/debate-game.git"
+  },
+  "author": "Bruno Carvalho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brunocarvalho123/debate-game/issues"
+  },
+  "homepage": "https://github.com/brunocarvalho123/debate-game#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "ws": "^7.4.5"
+  }
+}
