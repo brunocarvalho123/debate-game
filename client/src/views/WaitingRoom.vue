@@ -21,7 +21,7 @@
           {{item.name}}
         </div>
       </div>
-      <DeButton class="button" label="Iniciar" @pressed="beginGame"></DeButton>
+      <DeButton class="button" label="Iniciar" @pressed="beginGame" :disabled="!ready"></DeButton>
     </div>
 
     <v-dialog v-model="infoDialog" width="40vw">
@@ -154,14 +154,26 @@
      DeButton
     },
     mounted() {
+      this.roomId = this.$route.params.roomId;
       bus.$on('changeIt', (data) => {
-        debugger; // eslint-disable-line no-debugger
-        console.log(data);
+        const parsedData = data.data.split(':');
+        if (parsedData[2].length > 0) {
+          let users = parsedData[2].split(';');
+          users.pop();
+          this.items = users.map((e,idx) => { return {id: idx, name: e}});
+        }
+        if (this.items.length >= 10 && data.data.is_mod) {
+          this.ready = true;
+        } else {
+          this.ready = false;
+        }
+
       })
     },
     data: () => ({
       isMod: true,
       infoDialog: false,
+      ready: false,
       roomId: '',
       selectedModule: undefined,
       items: []

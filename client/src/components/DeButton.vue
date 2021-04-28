@@ -1,5 +1,5 @@
 <template>
-  <div class="button-div" @click="pressed">
+  <div :class="( (disabled) ? 'button-div-disabled' : 'button-div')" @click="pressed">
     <span class="label">{{label}}</span>
   </div>
 </template>
@@ -14,6 +14,15 @@
     color: var(--app-background);
     border-radius: 10px;
   }
+  .button-div-disabled {
+    display: grid;
+    justify-content: center;
+    margin: auto;
+    background-color: var(--app-accent);
+    color: var(--app-background);
+    opacity: 0.5;
+    border-radius: 10px;
+  }
   .label {
     margin: auto;
     font-size: 1.7vw;
@@ -25,11 +34,10 @@
 <script>
   export default {
     name: 'DeButton',
-    props: ['label'],
+    props: ['label', 'disabled'],
     methods: {
       pressed() {
-        // debugger; // eslint-disable-line no-debugger
-        this.$emit('pressed');
+        if (!this.disabled) this.$emit('pressed');
       }
     }
   }

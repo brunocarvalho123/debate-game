@@ -1,7 +1,7 @@
 <template>
   <div class="main-div">
     <div class="left-side">
-      <div class="title">Nome do jogo</div>
+      <div class="main-title">Jogo de debate</div>
       <div class="main-button new-game-button" @click="newGame()">
         <span>
           <v-icon size="2.5vw" class="b-icon" color="var(--app-background)">
@@ -10,19 +10,25 @@
           Criar novo jogo
         </span>
       </div>
-      <div class="main-button join-game-button" @click="joinGame()">
-        <span>
-          <v-icon size="2.5vw" class="b-icon" color="var(--app-main-blue)">
-            mdi-keyboard
-          </v-icon>
-          Insira o código de acesso
-        </span>
+
+
+      <div class="div-inline-flex">
+        <v-text-field prepend-inner-icon="mdi-keyboard" filled color="var(--org-blue)" label="Insira o código de acesso" v-model="accessCode" @focus="focusInput"></v-text-field>
+        <transition name="fade">
+          <div key=1 v-if="joinNormal" class="main-button join-game-button" @click="joinGame()">
+            <span>
+              Juntar
+            </span>
+          </div>
+        </transition>
       </div>
+
     </div>
-    <div class="right-side"></div>
+    <div class="right-side">
+      <img src="home_page_img.svg" class="home-img" alt="home page img">
+    </div>
   </div>
 </template>
-
 
 <style scoped>
   .main-div {
@@ -42,7 +48,7 @@
     margin: auto;
     width: 100%;
   }
-  .title {
+  .main-title {
     color: var(--app-main-blue);
     font-size: 3vw;
     font-weight: 550;
@@ -73,19 +79,50 @@
   .join-game-button {
     background-color: var(--app-background);
     color: var(--app-main-blue);
+    width: 20%;
+    margin-left: 1vw;
+    height: 6.5vh;
+    width: 6vw;
+    font-size: 1.2vw;
+  }
+  .home-img {
+    width: 30vw;
+    margin-right: 10vw;
+  }
+  .div-inline-flex {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+      transition: opacity .5s
+  }
+  .fade-enter,
+  .fade-leave-to {
+      opacity: 0
   }
 </style>
-
 
 <script>
   export default {
     name: 'Home',
+    data: () => ({
+      joinNormal: false,
+      accessCode: ''
+    }),
     methods: {
       newGame: function() {
         this.$router.push(`new_game`);
       },
       joinGame: function() {
-        this.$router.push(`waiting_room/1`);
+        if (this.accessCode.length === 6)  {
+          this.sendMessage(`join:${this.accessCode}:Rita`);
+          this.$router.push(`waiting_room/${this.accessCode}/`);
+        }
+      },
+      focusInput: function() {
+        this.joinNormal = true;
       }
     }
 }

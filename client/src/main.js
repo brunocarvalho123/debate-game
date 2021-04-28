@@ -27,7 +27,7 @@ const app = new Vue({
     Vue.prototype.$connection = new WebSocket("ws://localhost:8081")
 
     Vue.prototype.$connection.onmessage = function(event) {
-      bus.$emit('changeIt', 'changed header');
+      bus.$emit('changeIt', event);
       console.log(event);
     }
 

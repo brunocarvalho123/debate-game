@@ -16,7 +16,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/NewGame.vue')
   },
   {
-    path: '/waiting_room/:module',
+    path: '/waiting_room/:roomId',
     name: 'WaitingRoom',
     component: () => import(/* webpackChunkName: "about" */ '../views/WaitingRoom.vue')
   },
