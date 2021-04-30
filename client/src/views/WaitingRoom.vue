@@ -21,7 +21,7 @@
           {{item.name}}
         </div>
       </div>
-      <DeButton class="button" label="Iniciar" @pressed="beginGame" :disabled="!ready"></DeButton>
+      <DeButton class="button" label="Iniciar" @pressed="sendReady" :disabled="!ready"></DeButton>
     </div>
 
     <v-dialog v-model="infoDialog" width="40vw">
@@ -168,20 +168,29 @@
         console.log(err);
       });
 
-      bus.$on('changeIt', (data) => {
-        const parsedData = data.data.split(':');
-        if (parsedData[2].length > 0) {
-          let users = parsedData[2].split(';');
-          users.pop();
-          this.items = users.map((e,idx) => { return {id: idx, name: e}});
-        }
-        if (parsedData[3] === "true") this.isMod = true;
-        if (this.items.length >= 1 && this.isMod) {
-          this.ready = true;
-        } else {
-          this.ready = false;
-        }
+      bus.$on('users', (event) => {
+        if (event && event.data && event.roomId === this.roomId) {
+          if (event.data[0].length > 0) {
+            let users = event.data[0].split(';');
+            users.pop(); // remove last trash char
+            this.items = users.map((e,idx) => { return {id: idx, name: e}});
+          }
+          if (event.data[1] === "true") this.isMod = true;
 
+          if (event.data[0].length === 0 && this.isMod) this.infoDialog = true;
+
+          if (this.items.length >= 1 && this.isMod) {
+            this.ready = true;
+          } else {
+            this.ready = false;
+          }
+        }
+      })
+
+      bus.$on('start-slides', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.$router.push('/slides');
+        }
       })
     },
     data: () => ({
@@ -189,43 +198,15 @@
       infoDialog: false,
       ready: false,
       roomId: '',
-      selectedModule: undefined,
       items: []
-      // items: [{id:0, name:'Russell'},
-      //         {id:1, name:'Cabrera'},
-      //         {id:2, name:'Newton'},
-      //         {id:3, name:'Mercer'},
-      //         {id:4, name:'Hobbs'},
-      //         {id:5, name:'Alvarez'},
-      //         {id:6, name:'Hicks'},
-      //         {id:7, name:'Puckett'},
-      //         {id:8, name:'Mohammed'},
-      //         {id:9, name:'Mullins'},
-      //         {id:10, name:'Robson'},
-      //         {id:11, name:'Dennis'},
-      //         {id:12, name:'Montes'},
-      //         {id:13, name:'Whittle'},
-      //         {id:14, name:'Kaur'},
-      //         {id:15, name:'Milne'},
-      //         {id:16, name:'Oneal'},
-      //         {id:17, name:'Rogers'},
-      //         {id:18, name:'Stewart'},
-      //         {id:19, name:'Kent'},
-      //         {id:20, name:'Klein'},
-      //         {id:21, name:'Rivers'},
-      //         {id:22, name:'Keeling'},
-      //         {id:23, name:'Beasley'},
-      //         {id:24, name:'Markham'},
-      //         {id:25, name:'Wolf'},
-      //         {id:26, name:'Crawford'},
-      //         {id:27, name:'Chang'},
-      //         {id:28, name:'Henry'},
-      //         {id:29, name:'Wilkerson'}]
     }),
     methods: {
-      beginGame: function() {
+      sendReady: function() {
         // debugger; // eslint-disable-line no-debugger
-        this.$router.push('/slides');
+        if (this.ready && this.isMod) {
+          this.sendMessage(`start-slides:${this.roomId}`);
+        }
+        // this.$router.push('/slides');
       }
     }
   }

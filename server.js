@@ -34,21 +34,29 @@ const wss = new WebSocket.Server({ server });
 wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(data) {
     const decodedData = data.split(':');
+    if (!decodedData[0] || !decodedData[1]) return;
+
     if (decodedData[0] === 'create') {
       global.usersObject[decodedData[1]] = {users: [], mod: ws};
       responseMessage = `${decodedData[1]}:users::true`;
       global.usersObject[decodedData[1]].mod.send(responseMessage);
     } else if (decodedData[0] === 'join') {
-      if (global.usersObject[decodedData[1]]) {
-        global.usersObject[decodedData[1]].users.push({name: decodedData[2], client: ws});
-        responseMessage = `${decodedData[1]}:users:${global.usersObject[decodedData[1]].users.map(e => e.name+';')}`;
-        global.usersObject[decodedData[1]].users.forEach(function each(obj) {
-          if (obj.readyState === WebSocket.OPEN) {
-            obj.send(responseMessage);
-          }
-        });
-        global.usersObject[decodedData[1]].mod.send(`${responseMessage}:true`);
-      }
+      global.usersObject[decodedData[1]].users.push({name: decodedData[2], client: ws});
+      responseMessage = `${decodedData[1]}:users:${global.usersObject[decodedData[1]].users.map(e => e.name+';')}`;
+      global.usersObject[decodedData[1]].users.forEach(function each(obj) {
+        if (obj.client.readyState === WebSocket.OPEN) {
+          obj.client.send(responseMessage);
+        }
+      });
+      global.usersObject[decodedData[1]].mod.send(`${responseMessage}:true`);
+    } else if (decodedData[0] === 'start-slides') {
+      responseMessage = `${decodedData[1]}:start-slides`;
+      global.usersObject[decodedData[1]].users.forEach(function each(obj) {
+        if (obj.client.readyState === WebSocket.OPEN) {
+          obj.client.send(responseMessage);
+        }
+      });
+      global.usersObject[decodedData[1]].mod.send(`${responseMessage}:true`);
     }
     // wss.clients.forEach(function each(client) {
     //   if (client !== ws && client.readyState === WebSocket.OPEN) {

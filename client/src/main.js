@@ -27,8 +27,18 @@ const app = new Vue({
     Vue.prototype.$connection = new WebSocket("ws://localhost:8081")
 
     Vue.prototype.$connection.onmessage = function(event) {
-      bus.$emit('changeIt', event);
-      console.log(event);
+      if (event && event.data) {
+        const parsedData = event.data.split(':');
+        const roomId = parsedData.shift();
+        const msgType = parsedData.shift();
+
+        if (msgType && roomId) {
+          let responseObj = {roomId: roomId, data: parsedData}
+          console.log(responseObj);
+          bus.$emit(msgType, responseObj);
+        }
+      }
+
     }
 
     Vue.prototype.$connection.onopen = function(event) {
