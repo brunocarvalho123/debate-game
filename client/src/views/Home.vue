@@ -15,7 +15,7 @@
       <div class="div-inline-flex">
         <v-text-field prepend-inner-icon="mdi-keyboard" filled color="var(--org-blue)" label="Insira o código de acesso" v-model="accessCode" @focus="focusInput"></v-text-field>
         <transition name="fade">
-          <div key=1 v-if="joinNormal" class="main-button join-game-button" @click="joinGame()">
+          <div key=1 v-if="joinNormal" class="main-button join-game-button" @click="nameDialog=true">
             <span>
               Juntar
             </span>
@@ -27,6 +27,27 @@
     <div class="right-side">
       <img src="home_page_img.svg" class="home-img" alt="home page img">
     </div>
+
+    <v-dialog v-model="nameDialog" width="500">
+      <v-card>
+        <v-card-title class="headline">
+          Nome:
+        </v-card-title>
+        <v-card-text>
+          <v-text-field :name="Math.random()" color="var(--app-main-blue)" v-model=name></v-text-field>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="nameDialog=false">
+            Cancelar
+          </v-btn>
+          <v-btn color="var(--app-accent)" text @click="joinGame()">
+            Confirmar
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -109,15 +130,17 @@
     name: 'Home',
     data: () => ({
       joinNormal: false,
-      accessCode: ''
+      accessCode: '',
+      nameDialog: false,
+      name: ''
     }),
     methods: {
       newGame: function() {
         this.$router.push(`new_game`);
       },
       joinGame: function() {
-        if (this.accessCode.length === 6)  {
-          this.sendMessage(`join:${this.accessCode}:Rita`);
+        if (this.accessCode.length === 6 && this.name)  {
+          this.sendMessage(`join:${this.accessCode}:${this.name}`);
           this.$router.push(`waiting_room/${this.accessCode}/`);
         }
       },

@@ -145,6 +145,7 @@
 </style>
 
 <script>
+  import http from "../http-common";
   import DeButton from '@/components/DeButton.vue'
   import { bus } from '../main';
 
@@ -155,6 +156,18 @@
     },
     mounted() {
       this.roomId = this.$route.params.roomId;
+      http.get(`/users/${this.roomId}`).then(response => {
+        if (response && response.data && response.data.length > 0) {
+          this.items = [];
+          for (let idx = 0; idx < response.data.length; idx++) {
+            const element = response.data[idx];
+            this.items.push({id: idx, name: element});
+          }
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+
       bus.$on('changeIt', (data) => {
         const parsedData = data.data.split(':');
         if (parsedData[2].length > 0) {
@@ -162,7 +175,8 @@
           users.pop();
           this.items = users.map((e,idx) => { return {id: idx, name: e}});
         }
-        if (this.items.length >= 10 && data.data.is_mod) {
+        if (parsedData[3] === "true") this.isMod = true;
+        if (this.items.length >= 1 && this.isMod) {
           this.ready = true;
         } else {
           this.ready = false;
@@ -171,7 +185,7 @@
       })
     },
     data: () => ({
-      isMod: true,
+      isMod: false,
       infoDialog: false,
       ready: false,
       roomId: '',
