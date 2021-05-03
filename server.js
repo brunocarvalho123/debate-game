@@ -5,6 +5,7 @@ const WebSocket = require("ws");
 const cors = require("cors");
 
 const users = require("./routes/api/users");
+const groups = require("./routes/api/groups");
 
 const app = express();
 
@@ -40,35 +41,45 @@ wss.on('connection', function connection(ws) {
       global.usersObject[decodedData[1]] = {users: [], mod: ws};
       responseMessage = `${decodedData[1]}:users::true`;
       global.usersObject[decodedData[1]].mod.send(responseMessage);
-    } else if (decodedData[0] === 'join') {
-      global.usersObject[decodedData[1]].users.push({name: decodedData[2], client: ws});
-      responseMessage = `${decodedData[1]}:users:${global.usersObject[decodedData[1]].users.map(e => e.name+';')}`;
+    } else if (decodedData[0]) {
+      if (decodedData[0] === 'join') {
+        global.usersObject[decodedData[1]].users.push({name: decodedData[2], client: ws});
+        responseMessage = `${decodedData[1]}:users:${global.usersObject[decodedData[1]].users.map(e => e.name+';')}`;
+      } else if (decodedData[0] === 'start-slides') {
+        responseMessage = `${decodedData[1]}:start-slides`;
+      } else if (decodedData[0] === 'next-slide') {
+        responseMessage = `${decodedData[1]}:next-slide`;
+      } else if (decodedData[0] === 'previous-slide') {
+        responseMessage = `${decodedData[1]}:previous-slide`;
+      } else if (decodedData[0] === 'start-game-instructions') {
+        responseMessage = `${decodedData[1]}:start-game-instructions`;
+      } else if (decodedData[0] === 'start-game-groups') {
+        responseMessage = `${decodedData[1]}:start-game-groups`;
+        global.groups[decodedData[1]] = [];
+        let rivals1 = [{id:0, name:'Grupo 1', members:[]}, {id:1, name:'Grupo 2', members:[]}];
+        for (let idx = 0; idx < global.usersObject[decodedData[1]].users.length; idx++)
+          rivals1[idx % 2].members.push(idx);
+        global.groups[decodedData[1]].push(rivals1);
+      } else if (decodedData[0] === 'start-game-instructions') {
+        responseMessage = `${decodedData[1]}:start-group-info`;
+      } else if (decodedData[0] === 'my-info') {
+        let me = global.usersObject[decodedData[1]].users.filter(e => e.client == ws)[0];
+        // TODO
+        responseMessage = `${decodedData[1]}:my-info:${me.name}`;
+      }
+
       global.usersObject[decodedData[1]].users.forEach(function each(obj) {
-        if (obj.client.readyState === WebSocket.OPEN) {
-          obj.client.send(responseMessage);
-        }
-      });
-      global.usersObject[decodedData[1]].mod.send(`${responseMessage}:true`);
-    } else if (decodedData[0] === 'start-slides') {
-      responseMessage = `${decodedData[1]}:start-slides`;
-      global.usersObject[decodedData[1]].users.forEach(function each(obj) {
-        if (obj.client.readyState === WebSocket.OPEN) {
-          obj.client.send(responseMessage);
-        }
+        if (obj.client.readyState === WebSocket.OPEN) obj.client.send(responseMessage);
       });
       global.usersObject[decodedData[1]].mod.send(`${responseMessage}:true`);
     }
-    // wss.clients.forEach(function each(client) {
-    //   if (client !== ws && client.readyState === WebSocket.OPEN) {
-    //     client.send(data);
-    //   }
-    // })
     console.log(`Message received ~> ${data}`)
   });
   ws.send('You are connected!');
 })
 
 app.use('/api/users', users);
+app.use('/api/groups', groups);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
@@ -79,7 +90,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
   });
 }
-
 
 server.listen(PORT, function() {
   console.log(`Server is listening on ${PORT}!`)

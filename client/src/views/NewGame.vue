@@ -66,7 +66,7 @@
     },
     data: () => ({
       selectedModule: undefined,
-      modules: ['Integrity - Animal Experimentation', 'Modulo 2', 'Modulo 3', 'Modulo 4']
+      modules: ['Integrity - Animal Experimentation']
     }),
     methods: {
       makeId(length) {

@@ -42,7 +42,7 @@
       </div>
       <DeButton class="button" label="Continuar" @pressed="startGame"></DeButton>
     </div>
-    <Footer :items="items" label="Participantes"></Footer>
+    <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
   </div>
 </template>
 
@@ -136,6 +136,8 @@
   import Footer from '@/components/Footer.vue';
   import DeButton from '@/components/DeButton.vue';
   import ProgressHeader from '@/components/ProgressHeader.vue';
+  import http from "../http-common";
+  import { bus } from '../main';
 
   export default {
     name: 'GameInstructions',
@@ -144,39 +146,29 @@
      DeButton,
      ProgressHeader
     },
+    mounted() {
+      this.roomId = this.$route.params.roomId;
+      this.groupId = this.$route.params.groupId;
+      if (this.roomId.length !== 6) this.$router.push(`/`);
+      if (this.groupId.length !== 1) this.$router.push(`/`);
+
+      http.get(`/groups/${this.roomId}`).then(response => {
+        if (response && response.data && response.data.length > 0) {
+          this.matches = response.data;
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+
+      bus.$on('start-game-groups', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.$router.push(`/game_groups/${this.roomId}`);
+        }
+      })
+    },
     data: () => ({
-      isMod: true,
-      selectedModule: undefined,
-      items: [{id:0, name:'Russell'},
-              {id:1, name:'Cabrera'},
-              {id:2, name:'Newton'},
-              {id:3, name:'Mercer'},
-              {id:4, name:'Hobbs'},
-              {id:5, name:'Alvarez'},
-              {id:6, name:'Hicks'},
-              {id:7, name:'Puckett'},
-              {id:8, name:'Mohammed'},
-              {id:9, name:'Mullins'},
-              {id:10, name:'Robson'},
-              {id:11, name:'Dennis'},
-              {id:12, name:'Montes'},
-              {id:13, name:'Whittle'},
-              {id:14, name:'Kaur'},
-              {id:15, name:'Milne'},
-              {id:16, name:'Oneal'},
-              {id:17, name:'Rogers'},
-              {id:18, name:'Stewart'},
-              {id:19, name:'Kent'},
-              {id:20, name:'Klein'},
-              {id:21, name:'Rivers'},
-              {id:22, name:'Keeling'},
-              {id:23, name:'Beasley'},
-              {id:24, name:'Markham'},
-              {id:25, name:'Wolf'},
-              {id:26, name:'Crawford'},
-              {id:27, name:'Chang'},
-              {id:28, name:'Henry'},
-              {id:29, name:'Wilkerson'}]
+      items: [],
+      groupId: ''
     }),
     methods: {
       startGame: function() {

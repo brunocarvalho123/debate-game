@@ -1,4 +1,5 @@
 var Global = {
-    usersObject : { }
+    usersObject : { },
+    groups : { }
 };
 module.exports = Global;

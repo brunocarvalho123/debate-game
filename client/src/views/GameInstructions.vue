@@ -44,7 +44,7 @@
           <div>No final de todos os debates, serão apresentadas as classificações e ganha quem tiver o maior número de pontos.</div>
         </div>
       </div>
-      <DeButton class="button" label="Começar jogo" @pressed="startGame"></DeButton>
+      <DeButton class="button" v-if="isMod" label="Começar jogo" @pressed="startGame"></DeButton>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
@@ -135,6 +135,8 @@
 <script>
   import Footer from '@/components/Footer.vue';
   import DeButton from '@/components/DeButton.vue';
+  import http from "../http-common";
+  import { bus } from '../main';
 
   export default {
     name: 'GameInstructions',
@@ -142,43 +144,45 @@
      Footer,
      DeButton
     },
+    mounted() {
+      this.roomId = this.$route.params.roomId;
+      if (this.roomId.length !== 6) this.$router.push(`/`);
+
+      bus.$on('me-mod', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.isMod = true;
+        }
+      })
+
+      http.get(`/users/${this.roomId}`).then(response => {
+        if (response && response.data && response.data.length > 0) {
+          this.items = [];
+          for (let idx = 0; idx < response.data.length; idx++) {
+            const element = response.data[idx];
+            this.items.push({id: idx, name: element});
+          }
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+
+      bus.$on('start-game-groups', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.$router.push(`/game_groups/${this.roomId}`);
+        }
+      })
+    },
     data: () => ({
-      isMod: true,
+      isMod: false,
       selectedModule: undefined,
-      items: [{id:0, name:'Russell'},
-              {id:1, name:'Cabrera'},
-              {id:2, name:'Newton'},
-              {id:3, name:'Mercer'},
-              {id:4, name:'Hobbs'},
-              {id:5, name:'Alvarez'},
-              {id:6, name:'Hicks'},
-              {id:7, name:'Puckett'},
-              {id:8, name:'Mohammed'},
-              {id:9, name:'Mullins'},
-              {id:10, name:'Robson'},
-              {id:11, name:'Dennis'},
-              {id:12, name:'Montes'},
-              {id:13, name:'Whittle'},
-              {id:14, name:'Kaur'},
-              {id:15, name:'Milne'},
-              {id:16, name:'Oneal'},
-              {id:17, name:'Rogers'},
-              {id:18, name:'Stewart'},
-              {id:19, name:'Kent'},
-              {id:20, name:'Klein'},
-              {id:21, name:'Rivers'},
-              {id:22, name:'Keeling'},
-              {id:23, name:'Beasley'},
-              {id:24, name:'Markham'},
-              {id:25, name:'Wolf'},
-              {id:26, name:'Crawford'},
-              {id:27, name:'Chang'},
-              {id:28, name:'Henry'},
-              {id:29, name:'Wilkerson'}]
+      roomId: '',
+      items: []
     }),
     methods: {
       startGame: function() {
-        this.$router.push('/game_groups');
+        if (this.isMod) {
+          this.sendMessage(`start-game-groups:${this.roomId}`);
+        }
       }
     }
   }

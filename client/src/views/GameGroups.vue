@@ -38,7 +38,7 @@
         </div>
 
       </div>
-      <DeButton class="button" label="Continuar" @pressed="goToGroups"></DeButton>
+      <DeButton class="button" label="Continuar" v-if="isMod" @pressed="goToGroups"></DeButton>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
@@ -148,6 +148,8 @@
 <script>
   import Footer from '@/components/Footer.vue';
   import DeButton from '@/components/DeButton.vue';
+  import http from "../http-common";
+  import { bus } from '../main';
 
   export default {
     name: 'GameGroups',
@@ -155,47 +157,70 @@
      Footer,
      DeButton
     },
+    mounted() {
+      this.roomId = this.$route.params.roomId;
+      if (this.roomId.length !== 6) this.$router.push(`/`);
+
+      bus.$on('me-mod', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.isMod = true;
+        }
+      })
+
+      http.get(`/users/${this.roomId}`).then(response => {
+        if (response && response.data && response.data.length > 0) {
+          this.items = [];
+          for (let idx = 0; idx < response.data.length; idx++) {
+            const element = response.data[idx];
+            this.items.push({id: idx, name: element});
+          }
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+
+      http.get(`/groups/${this.roomId}`).then(response => {
+        if (response && response.data && response.data.length > 0) {
+          this.matches = response.data;
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+
+      bus.$on('my-info', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.isMod = true;
+          this.myGroup = 0;
+          this.myId = 0;
+        }
+      })
+
+      bus.$on('start-group-info', (event) => {
+        if (event && event.roomId === this.roomId) {
+          if (this.isMod) this.$router.push(`/mod_group_wait/${this.roomId}`);
+          else if (this.myGroup > 0) {
+            this.$router.push(`/group_info/${this.roomId}/${this.myGroup}`);
+          }
+        }
+      });
+    },
     data: () => ({
-      isMod: true,
-      selectedModule: undefined,
-      matches: [[{id:0, name:'Grupo 1', members:[0,1,2,3,4]}, {id:1, name:'Grupo 2', members:[5,6,7,8,9]}],
-               [{id:2, name:'Grupo 3', members:[10,11,12,13,14]}, {id:3, name:'Grupo 4', members:[15,16,17,18,19]}],
-               [{id:4, name:'Grupo 5', members:[20,21,22,23,24]}, {id:5, name:'Grupo 6', members:[25,26,27,28,29]}]
+      isMod: false,
+      matches: [
+              // [{id:0, name:'Grupo 1', members:[0,1,2,3,4]}, {id:1, name:'Grupo 2', members:[5,6,7,8,9]}],
+              //  [{id:2, name:'Grupo 3', members:[10,11,12,13,14]}, {id:3, name:'Grupo 4', members:[15,16,17,18,19]}],
+              //  [{id:4, name:'Grupo 5', members:[20,21,22,23,24]}, {id:5, name:'Grupo 6', members:[25,26,27,28,29]}]
               ],
-      items: [{id:0, name:'Russell'},
-              {id:1, name:'Cabrera'},
-              {id:2, name:'Newton'},
-              {id:3, name:'Mercer'},
-              {id:4, name:'Hobbs'},
-              {id:5, name:'Alvarez'},
-              {id:6, name:'Hicks'},
-              {id:7, name:'Puckett'},
-              {id:8, name:'Mohammed'},
-              {id:9, name:'Mullins'},
-              {id:10, name:'Robson'},
-              {id:11, name:'Dennis'},
-              {id:12, name:'Montes'},
-              {id:13, name:'Whittle'},
-              {id:14, name:'Kaur'},
-              {id:15, name:'Milne'},
-              {id:16, name:'Oneal'},
-              {id:17, name:'Rogers'},
-              {id:18, name:'Stewart'},
-              {id:19, name:'Kent'},
-              {id:20, name:'Klein'},
-              {id:21, name:'Rivers'},
-              {id:22, name:'Keeling'},
-              {id:23, name:'Beasley'},
-              {id:24, name:'Markham'},
-              {id:25, name:'Wolf'},
-              {id:26, name:'Crawford'},
-              {id:27, name:'Chang'},
-              {id:28, name:'Henry'},
-              {id:29, name:'Wilkerson'}]
+      roomId: '',
+      items: [],
+      myGroup: -1,
+      myId: -1
     }),
     methods: {
       goToGroups: function() {
-        this.$router.push('/group_info');
+        if (this.isMod) {
+          this.sendMessage(`start-group-info:${this.roomId}`);
+        }
       }
     }
   }

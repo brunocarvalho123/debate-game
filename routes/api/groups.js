@@ -3,14 +3,13 @@ const router = express.Router();
 const global = require('../../common/global.js');
 
 /**
- * @route   GET api/users/:room_id
- * @desc    Get All users in the room
+ * @route   GET api/groups/:room_id
+ * @desc    Get All groups in the room
  * @access  Public
  */
 router.get('/:room_id', (req, res) => {
   try {
-    global.usersObject[req.params.room_id].mod.send(`${req.params.room_id}:me-mod`);
-    res.status(200).json(global.usersObject[req.params.room_id].users.map(e => e.name));
+    res.status(200).json(global.groups[req.params.room_id]);
   } catch (e) {
     res.status(400).json({ msg: e.message });
   }

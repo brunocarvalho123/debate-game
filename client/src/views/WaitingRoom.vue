@@ -156,6 +156,8 @@
     },
     mounted() {
       this.roomId = this.$route.params.roomId;
+      if (this.roomId.length !== 6) this.$router.push(`/`);
+
       http.get(`/users/${this.roomId}`).then(response => {
         if (response && response.data && response.data.length > 0) {
           this.items = [];
@@ -189,7 +191,7 @@
 
       bus.$on('start-slides', (event) => {
         if (event && event.roomId === this.roomId) {
-          this.$router.push('/slides');
+          this.$router.push(`/slides/${this.roomId}`);
         }
       })
     },
