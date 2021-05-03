@@ -13,4 +13,8 @@
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--app-background);
   }
+
+  * {
+    font-weight: 600;
+  }
 </style>

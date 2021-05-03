@@ -25,9 +25,9 @@
   }
   .label {
     margin: auto;
-    font-size: 1.7vw;
-    font-weight: 500;
-    padding: 1vw 2vw 1vw 2vw;
+    font-size: 1.3vw;
+    font-weight: 600;
+    padding: 1vw;
   }
 </style>
 

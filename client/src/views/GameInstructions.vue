@@ -19,12 +19,30 @@
     </div>
     <div class="mid-div">
       <div class="text-grid">
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
-        <div class="text-cell">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+        <div class="text-cell">
+          <div class="text-cell-number">1</div>
+          <div>O jogo é realizado através de equipas, que são geradas de forma aleatória.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">2</div>
+          <div>Cada grupo vai ser colocado numa sala privada, onde lhe será apresentado uma dilema para o qual têm de arranjar uma solução.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">3</div>
+          <div>Após x tempo, os grupos serão todos reunidos numa sala comum.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">4</div>
+          <div>Na sala comum, cada grupo vai debater com o seu oponente.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">5</div>
+          <div>Após cada debate, todos os participantes devem votar no grupo que defendeu melhor as suas ideias.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">6</div>
+          <div>No final de todos os debates, serão apresentadas as classificações e ganha quem tiver o maior número de pontos.</div>
+        </div>
       </div>
       <DeButton class="button" label="Começar jogo" @pressed="startGame"></DeButton>
     </div>
@@ -84,17 +102,33 @@
     text-decoration: underline;
   }
   .text-grid {
-    margin-top: -10vh;
+    margin: -10vh auto auto auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    width: 90%;
   }
   .text-cell {
     color: var(--app-main-blue);
     font-size: 1.2vw;
-    font-weight: 350;
+    font-weight: 600;
     padding-bottom: 6vh;
     padding-left: 4vw;
     padding-right: 4vw;
+    display: flex;
+  }
+
+  .text-cell-number {
+    font-size: 2.5vw;
+    color: var(--app-accent);
+    font-weight: 700;
+    position: relative;
+    top: -1vh;
+    margin-right: 1.3vw;
+  }
+
+  .button {
+    position: relative;
+    bottom: -9vh;
   }
 </style>
 

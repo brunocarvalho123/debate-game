@@ -18,10 +18,12 @@
       </div>
     </div>
     <div class="mid-div">
+      <h2 class="mid-div-header">Dilema</h2>
       <div class="text-grid">
-        <h2>Dilema</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Metus aliquam eleifend mi in nulla. Lacus sed viverra tellus in hac habitasse platea dictumst. Consectetur purus ut faucibus pulvinar elementum integer enim neque volutpat. Ut eu sem integer vitae justo eget magna fermentum. Nulla aliquet enim tortor at auctor urna. Consequat semper viverra nam libero justo laoreet. Lacus laoreet non curabitur gravida arcu ac tortor dignissim. Dolor sed viverra ipsum nunc aliquet bibendum enim facilisis gravida. Molestie at elementum eu facilisis sed odio morbi quis. In iaculis nunc sed augue lacus viverra vitae congue eu. Dictum at tempor commodo ullamcorper a. Fermentum et sollicitudin ac orci. Risus viverra adipiscing at in. A diam maecenas sed enim ut sem viverra aliquet eget. Eget gravida cum sociis natoque penatibus et.</p>
-        <p>Nulla pellentesque dignissim enim sit amet venenatis urna. Sagittis nisl rhoncus mattis rhoncus urna. Pellentesque sit amet porttitor eget dolor morbi non arcu. Vestibulum lorem sed risus ultricies tristique. Sapien pellentesque habitant morbi tristique senectus. Non quam lacus suspendisse faucibus interdum posuere lorem. Nec dui nunc mattis enim ut. Ac turpis egestas sed tempus urna et. Ac feugiat sed lectus vestibulum mattis ullamcorper velit. Consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo. Auctor elit sed vulputate mi sit amet. Ut sem nulla pharetra diam.</p>
+        <p>You and your peer are working in a school project. Your peer says that you will need to change 5 out 15 numbers to prove that the idea of your project is correct, otherwise you will need to re-do the entire work. Your peer changes those 5 numbers, although you ask them not to.</p>
+        <p>You have accepted the change in those numbers. Your teacher finds out and confronts you and your peer. Your teacher tells you that either one of you speaks up or both will get a negative mark. Your peer keeps silent.</p>
+        <p>You don’t want to get a negative mark neither to admit that your peer came up with the idea of changing those numbers.</p>
+        <p>What solutions would you propose to deal with a situation, where you know that a friend faked data and you feel a conflict regarding reporting such misconduct action?</p>
       </div>
       <div class="bottom-stuff">
         <v-textarea label="Como é que tu resolverias este problema?" no-resize outlined hide-details v-model="solution"></v-textarea>
@@ -73,7 +75,16 @@
     display: grid;
     justify-content: center;
     margin: auto;
+    width: 90%;
   }
+
+  .mid-div-header {
+    padding-left: 4vw;
+    font-weight: 700;
+    font-size: 1.5vw;
+    margin-bottom: 25px;
+  }
+
   .continue-button {
     margin-left: 1vh;
     padding: 5px;
@@ -83,15 +94,27 @@
     color: var(--app-accent);
     text-decoration: underline;
   }
+  
   .text-grid {
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  div.text-grid > p {
     color: var(--app-main-blue);
     font-size: 1.1vw;
-    font-weight: 450;
-    padding: 0vw 15vw 5vw 15vw;
+    font-weight: 600;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    margin-bottom: 30px;
+    display: flex;
   }
+
   .bottom-stuff {
     display:flex;
     padding: 0vw 20vw 5vw 20vw;
+    margin-top: 9vh;
   }
   .button {
     margin-left: 3vw;
