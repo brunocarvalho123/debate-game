@@ -24,14 +24,14 @@
             <div class="group-header">{{groups[0].name}}</div>
             <div class="group-body">
               <span v-for="member in groups[0].members" v-bind:key="member.id" class="member-span">
-                {{items[member].name}}
+                {{items[member.id].name}}
               </span>
             </div>
             <div class="vs-sign">VS</div>
             <div class="group-header">{{groups[1].name}}</div>
             <div class="group-body">
               <span v-for="member in groups[1].members" v-bind:key="member.id" class="member-span">
-                {{items[member].name}}
+                {{items[member.id].name}}
               </span>
             </div>
           </div>
@@ -180,8 +180,9 @@
       });
 
       http.get(`/groups/${this.roomId}`).then(response => {
+        // debugger; // eslint-disable-line no-debugger
         if (response && response.data && response.data.length > 0) {
-          this.matches = response.data;
+          this.matches = [response.data];
         }
       }).catch(err => {
         console.log(err);
@@ -189,20 +190,22 @@
 
       bus.$on('my-info', (event) => {
         if (event && event.roomId === this.roomId) {
-          this.isMod = true;
-          this.myGroup = 0;
-          this.myId = 0;
+          this.myId = event.data[0];
+          this.myName = event.data[1];
+          this.myGroup = event.data[2];
         }
       })
 
       bus.$on('start-group-info', (event) => {
         if (event && event.roomId === this.roomId) {
           if (this.isMod) this.$router.push(`/mod_group_wait/${this.roomId}`);
-          else if (this.myGroup > 0) {
+          else if (this.myGroup > -1) {
             this.$router.push(`/group_info/${this.roomId}/${this.myGroup}`);
           }
         }
       });
+
+      this.sendMessage(`my-info:${this.roomId}`);
     },
     data: () => ({
       isMod: false,
@@ -214,7 +217,8 @@
       roomId: '',
       items: [],
       myGroup: -1,
-      myId: -1
+      myId: -1,
+      myName: ''
     }),
     methods: {
       goToGroups: function() {

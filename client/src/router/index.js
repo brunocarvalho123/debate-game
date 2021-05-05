@@ -13,37 +13,42 @@ const routes = [
   {
     path: '/new_game',
     name: 'NewGame',
-    component: () => import(/* webpackChunkName: "about" */ '../views/NewGame.vue')
+    component: () => import('../views/NewGame.vue')
   },
   {
     path: '/waiting_room/:roomId',
     name: 'WaitingRoom',
-    component: () => import(/* webpackChunkName: "about" */ '../views/WaitingRoom.vue')
+    component: () => import('../views/WaitingRoom.vue')
   },
   {
     path: '/slides/:roomId',
     name: 'Slides',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Slides.vue')
+    component: () => import('../views/Slides.vue')
   },
   {
     path: '/game_instructions/:roomId',
     name: 'GameInstructions',
-    component: () => import(/* webpackChunkName: "about" */ '../views/GameInstructions.vue')
+    component: () => import('../views/GameInstructions.vue')
   },
   {
     path: '/game_groups/:roomId',
     name: 'GameGroups',
-    component: () => import(/* webpackChunkName: "about" */ '../views/GameGroups.vue')
+    component: () => import('../views/GameGroups.vue')
   },
   {
     path: '/group_info/:roomId/:groupId',
     name: 'GroupInfo',
-    component: () => import(/* webpackChunkName: "about" */ '../views/GroupInfo.vue')
+    component: () => import('../views/GroupInfo.vue')
+  },
+  {
+    path: '/mod_group_wait/:roomId',
+    name: 'ModGroupWait',
+    component: () => import('../views/ModGroupWait.vue')
   },
   {
     path: '/groups/individual_solution',
     name: 'IndividualSolution',
-    component: () => import(/* webpackChunkName: "about" */ '../views/IndividualSolution.vue')
+    component: () => import('../views/IndividualSolution.vue')
   }
 ]
 

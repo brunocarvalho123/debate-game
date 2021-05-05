@@ -156,7 +156,19 @@
     },
     mounted() {
       this.roomId = this.$route.params.roomId;
+      console.log(this.roomId);
       if (this.roomId.length !== 6) this.$router.push(`/`);
+
+      bus.$on('me-mod', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.isMod = true;
+
+          if (this.hasShown === false) {
+            this.infoDialog = true;
+            this.hasShown = true;
+          }
+        }
+      })
 
       http.get(`/users/${this.roomId}`).then(response => {
         if (response && response.data && response.data.length > 0) {
@@ -170,6 +182,12 @@
         console.log(err);
       });
 
+      bus.$on('start-slides', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.$router.push(`/slides/${this.roomId}`);
+        }
+      })
+
       bus.$on('users', (event) => {
         if (event && event.data && event.roomId === this.roomId) {
           if (event.data[0].length > 0) {
@@ -177,9 +195,6 @@
             users.pop(); // remove last trash char
             this.items = users.map((e,idx) => { return {id: idx, name: e}});
           }
-          if (event.data[1] === "true") this.isMod = true;
-
-          if (event.data[0].length === 0 && this.isMod) this.infoDialog = true;
 
           if (this.items.length >= 1 && this.isMod) {
             this.ready = true;
@@ -188,18 +203,13 @@
           }
         }
       })
-
-      bus.$on('start-slides', (event) => {
-        if (event && event.roomId === this.roomId) {
-          this.$router.push(`/slides/${this.roomId}`);
-        }
-      })
     },
     data: () => ({
       isMod: false,
       infoDialog: false,
       ready: false,
       roomId: '',
+      hasShown: false,
       items: []
     }),
     methods: {

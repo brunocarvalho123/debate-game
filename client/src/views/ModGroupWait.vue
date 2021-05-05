@@ -140,7 +140,7 @@
   import { bus } from '../main';
 
   export default {
-    name: 'GroupInfo',
+    name: 'ModGroupWait',
     components: {
      Footer,
      DeButton,
@@ -148,13 +148,13 @@
     },
     mounted() {
       this.roomId = this.$route.params.roomId;
-      this.groupId = +this.$route.params.groupId + 1;
+      this.groupId = this.$route.params.groupId;
       if (this.roomId.length !== 6) this.$router.push(`/`);
-      if (this.groupId < 0 ) this.$router.push(`/`);
+      if (this.groupId.length !== 1) this.$router.push(`/`);
 
       http.get(`/groups/${this.roomId}`).then(response => {
         if (response && response.data && response.data.length > 0) {
-          this.items = response.data[this.groupId - 1].members;
+          this.matches = response.data;
         }
       }).catch(err => {
         console.log(err);
