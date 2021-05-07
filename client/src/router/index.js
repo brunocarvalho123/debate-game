@@ -46,9 +46,14 @@ const routes = [
     component: () => import('../views/ModGroupWait.vue')
   },
   {
-    path: '/groups/individual_solution',
+    path: '/groups/individual_solution/:roomId/:groupId',
     name: 'IndividualSolution',
     component: () => import('../views/IndividualSolution.vue')
+  },
+  {
+    path: '/groups/group_voting/:roomId/:groupId',
+    name: 'GroupVoting',
+    component: () => import('../views/GroupVoting.vue')
   }
 ]
 

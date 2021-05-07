@@ -22,15 +22,18 @@
       <div class="text-grid">
         <p>You and your peer are working in a school project. Your peer says that you will need to change 5 out 15 numbers to prove that the idea of your project is correct, otherwise you will need to re-do the entire work. Your peer changes those 5 numbers, although you ask them not to.</p>
         <p>You have accepted the change in those numbers. Your teacher finds out and confronts you and your peer. Your teacher tells you that either one of you speaks up or both will get a negative mark. Your peer keeps silent.</p>
-        <p>You don’t want to get a negative mark neither to admit that your peer came up with the idea of changing those numbers.</p>
+        <p>You don't want to get a negative mark neither to admit that your peer came up with the idea of changing those numbers.</p>
         <p>What solutions would you propose to deal with a situation, where you know that a friend faked data and you feel a conflict regarding reporting such misconduct action?</p>
       </div>
       <div class="bottom-stuff">
-        <v-textarea label="Como é que tu resolverias este problema?" no-resize outlined hide-details v-model="solution"></v-textarea>
-        <DeButton class="button" label="Enviar" @pressed="startGame"></DeButton>
+        <template v-if="sent == false">
+          <v-textarea label="Como é que tu resolverias este problema?" no-resize outlined hide-details v-model="solution"></v-textarea>
+          <DeButton class="button" label="Enviar" @pressed="sendSolution"></DeButton>
+        </template>
+        <span v-else class="wait-message">A aguardar as soluções dos seus colegas de grupo <span class="three-dots">{{threeDots}}</span></span>
       </div>
     </div>
-    <Footer :items="items" label="Participantes"></Footer>
+    <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
   </div>
 </template>
 
@@ -94,7 +97,7 @@
     color: var(--app-accent);
     text-decoration: underline;
   }
-  
+
   .text-grid {
     margin: auto;
     display: grid;
@@ -119,12 +122,25 @@
   .button {
     margin-left: 3vw;
   }
+  .wait-message {
+    text-align: center;
+    padding-left: 4vw;
+    font-weight: 700;
+    font-size: 1.3vw;
+  }
+  .three-dots {
+    color: var(--app-accent);
+    font-weight: 700;
+    font-size: 1.3vw;
+  }
 </style>
 
 <script>
   import Footer from '@/components/Footer.vue';
   import DeButton from '@/components/DeButton.vue';
   import ProgressHeader from '@/components/ProgressHeader.vue';
+  import http from "../http-common";
+  import { bus } from '../main';
 
   export default {
     name: 'IndividualSolution',
@@ -137,41 +153,41 @@
       isMod: true,
       selectedModule: undefined,
       solution: '',
-      items: [{id:0, name:'Russell'},
-              {id:1, name:'Cabrera'},
-              {id:2, name:'Newton'},
-              {id:3, name:'Mercer'},
-              {id:4, name:'Hobbs'},
-              {id:5, name:'Alvarez'},
-              {id:6, name:'Hicks'},
-              {id:7, name:'Puckett'},
-              {id:8, name:'Mohammed'},
-              {id:9, name:'Mullins'},
-              {id:10, name:'Robson'},
-              {id:11, name:'Dennis'},
-              {id:12, name:'Montes'},
-              {id:13, name:'Whittle'},
-              {id:14, name:'Kaur'},
-              {id:15, name:'Milne'},
-              {id:16, name:'Oneal'},
-              {id:17, name:'Rogers'},
-              {id:18, name:'Stewart'},
-              {id:19, name:'Kent'},
-              {id:20, name:'Klein'},
-              {id:21, name:'Rivers'},
-              {id:22, name:'Keeling'},
-              {id:23, name:'Beasley'},
-              {id:24, name:'Markham'},
-              {id:25, name:'Wolf'},
-              {id:26, name:'Crawford'},
-              {id:27, name:'Chang'},
-              {id:28, name:'Henry'},
-              {id:29, name:'Wilkerson'}]
+      items: [],
+      roomId: '',
+      groupId: '',
+      sent: false,
+      threeDots: '.'
     }),
+    mounted() {
+      this.roomId = this.$route.params.roomId;
+      this.groupId = +this.$route.params.groupId;
+      if (this.roomId.length !== 6) this.$router.push(`/`);
+      if (this.groupId < 0 ) this.$router.push(`/`);
+
+      http.get(`/groups/${this.roomId}`).then(response => {
+        if (response && response.data && response.data.length > 0) {
+          this.items = response.data[this.groupId - 1].members;
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+
+      bus.$on('group-voting', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.$router.push(`/groups/group_voting/${this.roomId}/${this.groupId}`);
+        }
+      });
+
+      setInterval(() => {if (this.threeDots.length < 3) {this.threeDots += '.'} else this.threeDots = '.'}, 750);
+    },
     methods: {
-      startGame: function() {
+      sendSolution: function() {
         // debugger; // eslint-disable-line no-debugger
-        this.$router.push('/game_groups');
+        if (this.solution && this.solution.length > 5) {
+          this.sendMessage(`individual-solution:${this.roomId}:${this.groupId-1}:${this.solution}`);
+          this.sent = true;
+        }
       }
     }
   }

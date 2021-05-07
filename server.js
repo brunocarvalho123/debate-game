@@ -30,11 +30,14 @@ const PORT = process.env.PORT || 8081;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+let groupSolutions = {};
 // room_id:msg_type:user1;user2:is_mod
 
 wss.on('connection', function connection(ws, req) {
   ws.id = req.headers['sec-websocket-key'];
   ws.on('message', function incoming(data) {
+    let responseMessage = '';
+    console.log(`Message received ~> ${data}`)
 
     try {
       const decodedData = data.split(':');
@@ -58,6 +61,7 @@ wss.on('connection', function connection(ws, req) {
           responseMessage = `${decodedData[1]}:start-game-instructions`;
         } else if (decodedData[0] === 'start-game-groups') {
           responseMessage = `${decodedData[1]}:start-game-groups`;
+          groupSolutions[decodedData[1]] = {};
           global.groups[decodedData[1]] = [];
           let rivals1 = [{id:0, name:'Grupo 1', members:[]}, {id:1, name:'Grupo 2', members:[]}];
           for (let idx = 0; idx < global.usersObject[decodedData[1]].users.length; idx++)
@@ -88,18 +92,41 @@ wss.on('connection', function connection(ws, req) {
           }
 
           return;
+        } else if (decodedData[0] === 'individual-solution') {
+          let groupId = decodedData[2];
+          let solution = decodedData[3];
+          if (groupSolutions[decodedData[1]]['a'+groupId] && groupSolutions[decodedData[1]]['a'+groupId].length > 0) {
+            groupSolutions[decodedData[1]]['a'+groupId].push(solution);
+            if (groupSolutions[decodedData[1]]['a'+groupId].length >= global.groups[decodedData[1]][groupId].members.length) {
+              responseMessage = `${decodedData[1]}:group-voting`;
+              for (let idx = 0; idx < global.groups[decodedData[1]][groupId].members.length; idx++) {
+                const element = global.groups[decodedData[1]][groupId].members[idx];
+                global.usersObject[decodedData[1]].users[element.id].client.send(responseMessage);
+              }
+            }
+          } else {
+            groupSolutions[decodedData[1]]['a'+groupId] = [];
+            groupSolutions[decodedData[1]]['a'+groupId].push(solution);
+          }
+          return;
+        } else if (decodedData[0] === 'get-group-solutions') {
+          let groupId = decodedData[2];
+          responseMessage = `${decodedData[1]}:get-group-solutions`;
+          ws.send(`${responseMessage}:${groupSolutions[decodedData[1]]['a'+groupId].map(e=>e+';')}`);
+          return;
         }
 
-        global.usersObject[decodedData[1]].users.forEach(function each(obj) {
-          if (obj.client.readyState === WebSocket.OPEN) obj.client.send(responseMessage);
-        });
-        global.usersObject[decodedData[1]].mod.send(`${responseMessage}:true`);
+        if (responseMessage) {
+          global.usersObject[decodedData[1]].users.forEach(function each(obj) {
+            if (obj.client.readyState === WebSocket.OPEN) obj.client.send(responseMessage);
+          });
+          global.usersObject[decodedData[1]].mod.send(`${responseMessage}:true`);
+        }
+
       }
     } catch (error) {
       console.log(`ERROR! ~> ${error}`);
     }
-
-    console.log(`Message received ~> ${data}`)
   });
   ws.send('You are connected!');
 })

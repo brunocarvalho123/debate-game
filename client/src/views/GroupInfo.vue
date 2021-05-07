@@ -3,9 +3,9 @@
     <div class="top-div">
       <div class="top-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-timer-sand
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">00:{{getPaddedTime()}}</span>
       </div>
       <div class="top-label">
         <ProgressHeader step=0></ProgressHeader>
@@ -40,7 +40,6 @@
           <div>No fim, devem votar num colega que será o representante do grupo no debate final em frente à turma.</div>
         </div>
       </div>
-      <DeButton class="button" label="Continuar" @pressed="startGame"></DeButton>
     </div>
     <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
   </div>
@@ -134,16 +133,13 @@
 
 <script>
   import Footer from '@/components/Footer.vue';
-  import DeButton from '@/components/DeButton.vue';
   import ProgressHeader from '@/components/ProgressHeader.vue';
   import http from "../http-common";
-  import { bus } from '../main';
 
   export default {
     name: 'GroupInfo',
     components: {
      Footer,
-     DeButton,
      ProgressHeader
     },
     mounted() {
@@ -160,19 +156,23 @@
         console.log(err);
       });
 
-      bus.$on('start-game-groups', (event) => {
-        if (event && event.roomId === this.roomId) {
-          this.$router.push(`/game_groups/${this.roomId}`);
-        }
-      })
+      setInterval(() => {if (this.timeLeft >= 0) this.timeLeft--}, 1000);
+
+      setTimeout(() => {this.startGame()}, this.timeLeft * 1000);
     },
     data: () => ({
       items: [],
-      groupId: ''
+      roomId: '',
+      groupId: '',
+      timeLeft: 10
     }),
     methods: {
       startGame: function() {
-        this.$router.push('/groups/individual_solution');
+        this.$router.push(`/groups/individual_solution/${this.roomId}/${this.groupId}`);
+      },
+      getPaddedTime: function() {
+        const doubleZero = '00';
+        return doubleZero.substring(0, doubleZero.length - (''+this.timeLeft).length) + ('' + this.timeLeft);
       }
     }
   }
