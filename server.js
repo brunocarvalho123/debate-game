@@ -30,6 +30,14 @@ const PORT = process.env.PORT || 8081;
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+function getAllIndexes(arr, val) {
+  var indexes = [], i;
+  for(i = 0; i < arr.length; i++)
+      if (arr[i] == val)
+          indexes.push(i);
+  return indexes;
+}
+
 let groupSolutions = {};
 // room_id:msg_type:user1;user2:is_mod
 
@@ -113,6 +121,36 @@ wss.on('connection', function connection(ws, req) {
           let groupId = decodedData[2];
           responseMessage = `${decodedData[1]}:get-group-solutions`;
           ws.send(`${responseMessage}:${groupSolutions[decodedData[1]]['a'+groupId].map(e=>e+';')}`);
+          return;
+        } else if (decodedData[0] === 'get-group-solutions-voted') {
+          let groupId = decodedData[2];
+          responseMessage = `${decodedData[1]}:get-group-solutions-voted:`;
+          let chosenSolution = {id: 0, nvotes: 0};
+          for (let idx = 0; idx < groupSolutions[decodedData[1]]['a'+groupId].length; idx++) {
+            let nVotes =  getAllIndexes(global.groups[decodedData[1]][groupId].votes,idx);
+            if (nVotes > chosenSolution.nvotes) {
+              chosenSolution.id = idx;
+              chosenSolution.nvotes = nVotes;
+            }
+          }
+          responseMessage += `${groupSolutions[decodedData[1]]['a'+groupId][chosenSolution.id]};`;
+          ws.send(responseMessage);
+          return;
+        } else if (decodedData[0] === 'individual-vote') {
+          let groupId = decodedData[2];
+          let solutionId = decodedData[3];
+          if (global.groups[decodedData[1]][groupId].votes && global.groups[decodedData[1]][groupId].votes.length > 0) {
+            global.groups[decodedData[1]][groupId].votes.push(solutionId);
+            if (global.groups[decodedData[1]][groupId].votes.length >= global.groups[decodedData[1]][groupId].members.length) {
+              responseMessage = `${decodedData[1]}:group-discussion`;
+              for (let idx = 0; idx < global.groups[decodedData[1]][groupId].members.length; idx++) {
+                const element = global.groups[decodedData[1]][groupId].members[idx];
+                global.usersObject[decodedData[1]].users[element.id].client.send(responseMessage);
+              }
+            }
+          } else {
+            global.groups[decodedData[1]][groupId].votes = [solutionId];
+          }
           return;
         }
 

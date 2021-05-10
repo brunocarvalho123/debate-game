@@ -54,6 +54,11 @@ const routes = [
     path: '/groups/group_voting/:roomId/:groupId',
     name: 'GroupVoting',
     component: () => import('../views/GroupVoting.vue')
+  },
+  {
+    path: '/groups/group_discussion/:roomId/:groupId',
+    name: 'GroupDiscussion',
+    component: () => import('../views/GroupDiscussion.vue')
   }
 ]
 

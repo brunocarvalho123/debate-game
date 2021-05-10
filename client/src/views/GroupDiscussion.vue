@@ -8,7 +8,7 @@
         <span class="icon-text">Início</span>
       </div>
       <div class="top-label">
-        <ProgressHeader step=2></ProgressHeader>
+        <ProgressHeader step=3></ProgressHeader>
       </div>
       <div class="top-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
@@ -21,11 +21,10 @@
       <div v-for="solution in solutions" v-bind:key="solution.id" class="coiso-div">
         <div class="paper-sticker"></div>
         <div v-if="solution.checked" class="check-sticker"></div>
-        <div class="solution-div" @click="voteOnSolution" :solution-id="solution.id">
+        <div class="solution-div" :solution-id="solution.id">
           <span class="text-span">{{solution.text}}</span>
         </div>
       </div>
-      <div class="coiso-div"><div class="paper-sticker"></div><div class="solution-div"><span class="text-span">Nenhuma das anteriores</span></div></div>
     </div>
     <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
   </div>
@@ -77,10 +76,6 @@
     text-align: center;
     align-items: center;
   }
-  .solution-div:hover {
-    cursor: pointer;
-    box-shadow: 0 4px 6px -4px #222;
-  }
   .paper-sticker {
     height: 5vh;
     width: 10vw;
@@ -115,7 +110,7 @@
   import { bus } from '../main';
 
   export default {
-    name: 'GroupVoting',
+    name: 'GroupDiscussion',
     components: {
      Footer,
      ProgressHeader
@@ -141,7 +136,7 @@
         console.log(err);
       });
 
-      bus.$on('get-group-solutions', (event) => {
+      bus.$on('get-group-solutions-voted', (event) => {
         if (event && event.roomId === this.roomId) {
           let res = event.data[0].split(';,');
           res[res.length-1] = res[res.length-1].slice(0, -1);
@@ -153,26 +148,14 @@
         }
       });
 
-      bus.$on('group-discussion', (event) => {
+      bus.$on('group-representative', (event) => {
         if (event && event.roomId === this.roomId) {
-          this.$router.push(`/groups/group_discussion/${this.roomId}/${this.groupId}`);
+          this.$router.push(`/groups/group_representative/${this.roomId}/${this.groupId}`);
         }
       });
 
-      this.sendMessage(`get-group-solutions:${this.roomId}:${this.groupId-1}`);
+      this.sendMessage(`get-group-solutions-voted:${this.roomId}:${this.groupId-1}`);
 
-    },
-    methods: {
-      voteOnSolution: function(event) {
-        // debugger; // eslint-disable-line no-debugger
-        if (event && event.target && event.target.className === "solution-div" && !this.sent) {
-          this.sendMessage(`individual-vote:${this.roomId}:${this.groupId-1}:${event.target.getAttribute('solution-id')}`);
-          let tmpSolut = this.solutions;
-          tmpSolut[+event.target.getAttribute('solution-id')].checked = true;
-          this.solutions = JSON.parse(JSON.stringify(tmpSolut));
-          this.sent = true;
-        }
-      }
     }
   }
 </script>
