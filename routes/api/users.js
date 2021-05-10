@@ -9,7 +9,7 @@ let global = require('../../common/global');
  */
 router.get('/:room_id', (req, res) => {
   try {
-    console.log('global ~~> ' + global);
+    console.log('global in users ~~> ' + JSON.stringify(global));
     global.usersObject[req.params.room_id].mod.send(`${req.params.room_id}:me-mod`);
     res.status(200).json(global.usersObject[req.params.room_id].users.map(e => e.name));
   } catch (e) {

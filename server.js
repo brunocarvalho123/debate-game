@@ -55,6 +55,7 @@ wss.on('connection', function connection(ws, req) {
         global.usersObject[decodedData[1]] = {users: [], mod: ws};
         responseMessage = `${decodedData[1]}:users::true`;
         global.usersObject[decodedData[1]].mod.send(responseMessage);
+        console.log('global in server ~~> ' + JSON.stringify(global));
       } else if (decodedData[0]) {
         if (decodedData[0] === 'join') {
           global.usersObject[decodedData[1]].users.push({name: decodedData[2], client: ws});
