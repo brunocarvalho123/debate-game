@@ -59,6 +59,42 @@ const routes = [
     path: '/groups/group_discussion/:roomId/:groupId',
     name: 'GroupDiscussion',
     component: () => import('../views/GroupDiscussion.vue')
+  },
+  {
+    path: '/groups/group_representative/:roomId/:groupId',
+    name: 'GroupRepresentative',
+    component: () => import('../views/GroupRepresentative.vue')
+  },
+  {
+    path: '/groups/group_representative_res/:roomId/:groupId',
+    name: 'GroupRepresentativeRes',
+    component: () => import('../views/GroupRepresentativeRes.vue')
+  },
+  {
+    path: '/final_info/:roomId',
+    name: 'FinalInfo',
+    component: () => import('../views/FinalInfo.vue')
+  },
+  {
+    path: '/final_theme_intro/:roomId',
+    name: 'FinalThemeIntro',
+    component: () => import('../views/FinalThemeIntro.vue')
+  },
+  {
+    path: '/final_discussion/:roomId',
+    name: 'FinalDiscussion',
+    component: () => import('../views/FinalDiscussion.vue')
+  },
+  {
+    path: '/final_voting/:roomId',
+    name: 'FinalVoting',
+    component: () => import('../views/FinalVoting.vue')
+  }
+  ,
+  {
+    path: '/final_results/:roomId',
+    name: 'FinalResults',
+    component: () => import('../views/FinalResults.vue')
   }
 ]
 

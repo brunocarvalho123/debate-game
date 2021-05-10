@@ -46,7 +46,6 @@ wss.on('connection', function connection(ws, req) {
   ws.on('message', function incoming(data) {
     let responseMessage = '';
 
-
     try {
       const decodedData = data.split(':');
       if (!decodedData[0] || !decodedData[1]) return;
@@ -55,7 +54,6 @@ wss.on('connection', function connection(ws, req) {
         global.usersObject[decodedData[1]] = {users: [], mod: ws};
         responseMessage = `${decodedData[1]}:users::true`;
         global.usersObject[decodedData[1]].mod.send(responseMessage);
-        console.log('global in server ~~> ' + JSON.stringify(global));
       } else if (decodedData[0]) {
         if (decodedData[0] === 'join') {
           global.usersObject[decodedData[1]].users.push({name: decodedData[2], client: ws});
@@ -80,7 +78,6 @@ wss.on('connection', function connection(ws, req) {
           responseMessage = `${decodedData[1]}:start-group-info`;
         } else if (decodedData[0] === 'my-info') {
           let me = {};
-
           for (let i = 0; i < global.usersObject[decodedData[1]].users.length; i++) {
             const e = global.usersObject[decodedData[1]].users[i];
             if (e.client.id == ws.id) {
