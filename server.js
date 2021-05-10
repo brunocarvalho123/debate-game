@@ -11,7 +11,7 @@ const app = express();
 
 const path = require("path");
 
-const global = require('./common/global');
+let global = require('./common/global');
 
 
 var corsOptions = {
