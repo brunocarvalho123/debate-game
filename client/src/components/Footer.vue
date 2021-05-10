@@ -28,6 +28,7 @@
     width: 100%;
     background-color: var(--app-secondary-blue);
     color: var(--app-main-blue);
+    height: 8vh;
   }
   .slot {
     padding-top: 2.2vh;

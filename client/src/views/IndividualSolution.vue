@@ -1,36 +1,40 @@
 <template>
   <div class="main-div">
-    <div class="top-div">
-      <div class="top-buttons">
+    <div class="header-container">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-home-outline
         </v-icon>
         <span class="icon-text">Início</span>
       </div>
-      <div class="top-label">
+      <div class="header-label">
         <ProgressHeader step=1></ProgressHeader>
       </div>
-      <div class="top-buttons">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-information-outline
         </v-icon>
         <span class="icon-text">Ajuda</span>
       </div>
     </div>
-    <div class="mid-div">
-      <h2 class="mid-div-header">Dilema</h2>
-      <div class="text-grid">
-        <p>You and your peer are working in a school project. Your peer says that you will need to change 5 out 15 numbers to prove that the idea of your project is correct, otherwise you will need to re-do the entire work. Your peer changes those 5 numbers, although you ask them not to.</p>
-        <p>You have accepted the change in those numbers. Your teacher finds out and confronts you and your peer. Your teacher tells you that either one of you speaks up or both will get a negative mark. Your peer keeps silent.</p>
-        <p>You don't want to get a negative mark neither to admit that your peer came up with the idea of changing those numbers.</p>
-        <p>What solutions would you propose to deal with a situation, where you know that a friend faked data and you feel a conflict regarding reporting such misconduct action?</p>
+    <div class="instructions-container">
+      <div>
+        <h2 class="mid-div-header">Dilema</h2>
+        <div class="text-grid">
+          <p>Vocês estão a realizar um projeto escolar. Para provar que a ideia do vosso projeto está correta, um de vós diz que precisam de alterar 5 dos 15 números que têm. Caso contrário, terão de recomeçar o projeto. Um de vós decide alterar esses 5 números, apesar de vocês pedirem para que não o faça. 
+            <br><br>Vocês acabam por aceitar a alteração desses números. O vosso professor descobre essa alteração e confronta-vos. O vosso professor diz-vos que, ou um de vós explica o que aconteceu ou todos terão nota negativa. O colega que alterou os números fica em silêncio.  
+          </p>
+          <p>Vocês não querem ter uma nota negativa nem admitir que o vosso colega teve a ideia de alterar os números. 
+            <br><br>Que soluções propõem para lidar com uma situação em que, por um lado sabem que um amigo vosso falsificou dados, e por outro lado sentem um conflito em relação a denunciar essa ação?
+          </p>
+        </div>
       </div>
       <div class="bottom-stuff">
         <template v-if="sent == false">
-          <v-textarea label="Como é que tu resolverias este problema?" no-resize outlined hide-details v-model="solution"></v-textarea>
+          <v-textarea label="Como é que tu resolverias este problema?" no-resize outlined hide-details v-model="solution" class="text-input"></v-textarea>
           <DeButton class="button" label="Enviar" @pressed="sendSolution"></DeButton>
         </template>
-        <span v-else class="wait-message">A aguardar as soluções dos seus colegas de grupo <span class="three-dots">{{threeDots}}</span></span>
+        <span v-else class="wait-message">A aguardar as soluções dos teus colegas de grupo <span class="three-dots">{{threeDots}}</span></span>
       </div>
     </div>
     <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
@@ -38,30 +42,10 @@
 </template>
 
 <style scoped>
-  .main-div {
-    display: grid;
-    grid-template-rows: 0.1fr 1fr;
-    height: 100vh;
-  }
-  .top-div {
-    height: 11vh;
-    display: flex;
-    color: var(--app-main-blue);
-    font-size: 1.6vw;
-    font-weight: 450;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px -6px #222;
-  }
-  .top-label {
-    margin: 4vh;
-  }
   .icon-text {
     margin-left: 10px;
   }
-  .top-buttons {
-    margin: 4vh;
-  }
-
+ 
   .b-icon {
     margin-bottom: 0.2vh;
   }
@@ -116,8 +100,8 @@
 
   .bottom-stuff {
     display:flex;
-    padding: 0vw 20vw 5vw 20vw;
-    margin-top: 9vh;
+    margin: 0 auto;
+    width: 50vw;
   }
   .button {
     margin-left: 3vw;
@@ -127,11 +111,16 @@
     padding-left: 4vw;
     font-weight: 700;
     font-size: 1.3vw;
+    color: var(--app-main-blue);
   }
   .three-dots {
     color: var(--app-accent);
     font-weight: 700;
     font-size: 1.3vw;
+  }
+
+  .text-input {
+    background-color: white;
   }
 </style>
 

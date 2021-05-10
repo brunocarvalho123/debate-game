@@ -1,16 +1,16 @@
 <template>
   <div class="main-div">
     <div class="top-div">
-      <div class="top-buttons">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-arrow-left-circle-outline
         </v-icon>
         <span class="icon-text">Explicação</span>
       </div>
-      <div class="top-label">
+      <div class="header-label">
         Formação de equipas
       </div>
-      <div class="top-buttons">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-information-outline
         </v-icon>
@@ -45,11 +45,6 @@
 </template>
 
 <style scoped>
-  .main-div {
-    display: grid;
-    grid-template-rows: 0.1fr 1fr;
-    height: 100vh;
-  }
   .top-div {
     height: 11vh;
     display: flex;
@@ -59,16 +54,11 @@
     justify-content: space-between;
     box-shadow: 0 4px 6px -6px #222;
   }
-  .top-label {
-    margin: 4vh;
-  }
+
   .icon-text {
     margin-left: 10px;
   }
-  .top-buttons {
-    margin: 4vh;
-  }
-
+ 
   .b-icon {
     margin-bottom: 0.2vh;
   }

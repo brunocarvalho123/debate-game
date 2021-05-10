@@ -27,7 +27,8 @@
     margin: auto;
     font-size: 1.3vw;
     font-weight: 600;
-    padding: 1vw;
+    /* padding: 1vw; */
+    padding: 0.7vw 1.3vw;
   }
 </style>
 
