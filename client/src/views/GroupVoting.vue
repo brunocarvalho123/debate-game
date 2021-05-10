@@ -28,7 +28,15 @@
           <img src="note_img.svg" class="solution-img" alt="texture img">
         </div>
       </div>
-      <div class="coiso-div"><div class="paper-sticker"></div><div class="solution-div"><span class="text-span">Nenhuma das anteriores</span></div></div>
+      <div class="coiso-div">
+        <div class="paper-sticker">
+          <img src="sticker_img.svg" class="sticker-img" alt="sticker img">
+        </div>
+        <div class="solution-div">
+          <span class="text-span">Nenhuma das anteriores</span>
+          <img src="note_img.svg" class="solution-img" alt="texture img">
+        </div>
+      </div>
     </div>
     <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
   </div>
@@ -164,7 +172,7 @@
         }
       });
 
-      this.sendMessage(`get-group-solutions:${this.roomId}:${this.groupId-1}`);
+      // this.sendMessage(`get-group-solutions:${this.roomId}:${this.groupId-1}`);
 
       const divCoisos = document.querySelectorAll('.coiso-div');
       for (const div of divCoisos) {
