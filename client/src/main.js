@@ -24,7 +24,9 @@ const app = new Vue({
   render: h => h(App),
   created: function() {
     console.log("Starting connection to WebSocket Server")
-    Vue.prototype.$connection = new WebSocket("ws://localhost:8081")
+    var HOST = location.origin.replace(/^http/, 'ws')
+    var ws = new WebSocket(HOST);
+    Vue.prototype.$connection = new WebSocket(ws);
 
     Vue.prototype.$connection.onmessage = function(event) {
       if (event && event.data) {
