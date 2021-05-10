@@ -28,7 +28,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 8081;
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({
+  'server': server
+})
 
 function getAllIndexes(arr, val) {
   var indexes = [], i;
