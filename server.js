@@ -11,7 +11,7 @@ const app = express();
 
 const path = require("path");
 
-const global = require('./common/global.js');
+const global = require('./common/global');
 
 
 var corsOptions = {
@@ -45,7 +45,7 @@ wss.on('connection', function connection(ws, req) {
   ws.id = req.headers['sec-websocket-key'];
   ws.on('message', function incoming(data) {
     let responseMessage = '';
-    console.log(`Message received ~> ${data}`)
+
 
     try {
       const decodedData = data.split(':');
@@ -93,7 +93,7 @@ wss.on('connection', function connection(ws, req) {
               break;
             }
           }
-          console.log(me);
+
           if (me.name || me.id) {
             responseMessage = `${decodedData[1]}:my-info:${me.id}:${me.name}:${me.group != undefined ? me.group : ''}`;
             ws.send(`${responseMessage}`);
@@ -163,7 +163,7 @@ wss.on('connection', function connection(ws, req) {
 
       }
     } catch (error) {
-      console.log(`ERROR! ~> ${error}`);
+
     }
   });
   ws.send('You are connected!');
@@ -183,5 +183,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 server.listen(PORT, function() {
-  console.log(`Server is listening on ${PORT}!`)
+
 })
