@@ -126,9 +126,10 @@ wss.on('connection', function connection(ws, req) {
           let chosenSolution = {id: 0, nvotes: 0};
           for (let idx = 0; idx < groupSolutions[decodedData[1]]['a'+groupId].length; idx++) {
             let nVotes =  getAllIndexes(global.groups[decodedData[1]][groupId].votes,idx);
-            if (nVotes > chosenSolution.nvotes) {
+            console.log(nVotes);
+            if (nVotes.length > chosenSolution.nvotes) {
               chosenSolution.id = idx;
-              chosenSolution.nvotes = nVotes;
+              chosenSolution.nvotes = nVotes.length;
             }
           }
           responseMessage += `${groupSolutions[decodedData[1]]['a'+groupId][chosenSolution.id]};`;

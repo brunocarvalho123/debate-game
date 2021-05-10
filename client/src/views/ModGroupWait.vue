@@ -8,7 +8,7 @@
         <span class="icon-text">Início</span>
       </div>
       <div class="top-label">
-        <ProgressHeader step=0></ProgressHeader>
+        Discussão de grupo
       </div>
       <div class="top-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
@@ -18,31 +18,10 @@
       </div>
     </div>
     <div class="mid-div">
-      <div class="text-grid">
-        <div class="text-cell">
-          <div class="text-cell-number hide-number">0</div>
-          <div>Bem vindos à sala do vosso grupo! Dentro de 3 minutos, vai aparecer um dilema no ecrã. O objetivo é que vocês arranjem uma solução para este problema. Esta atividade está dividida em várias fases:</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">1</div>
-          <div>No início vão estar todos com o microfone desligado, e cada um deve escrever a solução que achar melhor. Esta resposta é anónima.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">2</div>
-          <div>Quando acabar o tempo, começa a fase de votação. Aqui cada um deve votar nas ideias que achar melhor.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">3</div>
-          <div>Na fase de discussão, vão ter os vossos microfones ligados. Serão apresentadas as duas propostas com mais votos, e devem decidir entre vocês uma solução final. Podem modificar as ideias como quiserem.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">4</div>
-          <div>No fim, devem votar num colega que será o representante do grupo no debate final em frente à turma.</div>
-        </div>
-      </div>
-      <DeButton class="button" label="Continuar" @pressed="startGame"></DeButton>
+      <div class="timer">{{timeLeft}} min</div>
+      <ProgressHeader :step=step></ProgressHeader>
     </div>
-    <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
+    <Footer :items="items" label="Participantes"></Footer>
   </div>
 </template>
 
@@ -130,11 +109,18 @@
     position: relative;
     bottom: -6vh;
   }
+
+  .timer {
+    color: var(--app-main-blue);
+    font-size: 1.8vw;
+    font-weight: 600;
+    text-align: center;
+    margin-top: -15vh;
+  }
 </style>
 
 <script>
   import Footer from '@/components/Footer.vue';
-  import DeButton from '@/components/DeButton.vue';
   import ProgressHeader from '@/components/ProgressHeader.vue';
   import http from "../http-common";
   import { bus } from '../main';
@@ -143,36 +129,61 @@
     name: 'ModGroupWait',
     components: {
      Footer,
-     DeButton,
      ProgressHeader
     },
     mounted() {
       this.roomId = this.$route.params.roomId;
-      this.groupId = this.$route.params.groupId;
       if (this.roomId.length !== 6) this.$router.push(`/`);
-      if (this.groupId.length !== 1) this.$router.push(`/`);
 
-      http.get(`/groups/${this.roomId}`).then(response => {
+      http.get(`/users/${this.roomId}`).then(response => {
         if (response && response.data && response.data.length > 0) {
-          this.matches = response.data;
+          this.items = [];
+          for (let idx = 0; idx < response.data.length; idx++) {
+            const element = response.data[idx];
+            this.items.push({id: idx, name: element});
+          }
         }
       }).catch(err => {
         console.log(err);
       });
 
-      bus.$on('start-game-groups', (event) => {
+      bus.$on('start-final-info', (event) => {
         if (event && event.roomId === this.roomId) {
-          this.$router.push(`/game_groups/${this.roomId}`);
+          this.$router.push(`/final_info/${this.roomId}`);
         }
       })
+
+      setInterval(() => {
+                          if (this.totalSecs >= 0)
+                            this.totalSecs--;
+                          else
+                            return;
+
+                          if (this.totalSecs >= 225 && this.totalSecs < 230) {
+                            this.step = 2;
+                          } else if (this.totalSecs >= 220 && this.totalSecs < 225) {
+                            this.step = 3;
+                          } else if (this.totalSecs < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.totalSecs/60);
+                          const seconds = this.totalSecs - minutes * 60;
+                          this.timeLeft = this.strPadLeft(minutes,seconds);
+                        }, 1000);
     },
     data: () => ({
       items: [],
-      groupId: ''
+      groupId: '',
+      totalSecs: 4 * 60,
+      timeLeft: '',
+      step: 1
     }),
     methods: {
-      startGame: function() {
+      updateTimer: function() {
         this.$router.push('/groups/individual_solution');
+      },
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
       }
     }
   }
