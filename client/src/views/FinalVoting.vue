@@ -8,7 +8,7 @@
         <span class="icon-text">Início</span>
       </div>
       <div class="top-label">
-        Discussão de grupo
+        Atividade prática - Explicação geral
       </div>
       <div class="top-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
@@ -18,8 +18,33 @@
       </div>
     </div>
     <div class="mid-div">
-      <div class="timer">{{timeLeft}} min</div>
-      <ProgressHeader :step=step></ProgressHeader>
+      <div class="text-grid">
+        <div class="text-cell">
+          <div class="text-cell-number">1</div>
+          <div>O jogo é realizado através de equipas, que são geradas de forma aleatória.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">2</div>
+          <div>Cada grupo vai ser colocado numa sala privada, onde lhe será apresentado uma dilema para o qual têm de arranjar uma solução.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">3</div>
+          <div>Após x tempo, os grupos serão todos reunidos numa sala comum.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">4</div>
+          <div>Na sala comum, cada grupo vai debater com o seu oponente.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">5</div>
+          <div>Após cada debate, todos os participantes devem votar no grupo que defendeu melhor as suas ideias.</div>
+        </div>
+        <div class="text-cell">
+          <div class="text-cell-number">6</div>
+          <div>No final de todos os debates, serão apresentadas as classificações e ganha quem tiver o maior número de pontos.</div>
+        </div>
+      </div>
+      <DeButton class="button" v-if="isMod" label="Começar jogo" @pressed="startGame"></DeButton>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
@@ -101,45 +126,39 @@
     margin-right: 1.3vw;
   }
 
-  .hide-number {
-    color: var(--app-background);
-  }
-
   .button {
     position: relative;
-    bottom: -6vh;
-  }
-
-  .timer {
-    color: var(--app-main-blue);
-    font-size: 1.8vw;
-    font-weight: 600;
-    text-align: center;
-    margin-top: -15vh;
+    bottom: -9vh;
   }
 </style>
 
 <script>
   import Footer from '@/components/Footer.vue';
-  import ProgressHeader from '@/components/ProgressHeader.vue';
+  import DeButton from '@/components/DeButton.vue';
   import http from "../http-common";
   import { bus } from '../main';
 
   export default {
-    name: 'ModGroupWait',
+    name: 'FinalVoting',
     components: {
      Footer,
-     ProgressHeader
+     DeButton
     },
     mounted() {
       this.roomId = this.$route.params.roomId;
       if (this.roomId.length !== 6) this.$router.push(`/`);
 
+      bus.$on('me-mod', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.isMod = true;
+        }
+      })
+
       http.get(`/users/${this.roomId}`).then(response => {
         if (response && response.data && response.data.length > 0) {
           this.items = [];
           for (let idx = 0; idx < response.data.length; idx++) {
-            const element = response.data[idx];
+            const element = response.data[idx];0
             this.items.push({id: idx, name: element});
           }
         }
@@ -147,43 +166,23 @@
         console.log(err);
       });
 
-      bus.$on('start-final-info', (event) => {
+      bus.$on('start-game-groups', (event) => {
         if (event && event.roomId === this.roomId) {
-          this.$router.push(`/final_info/${this.roomId}`);
+          this.$router.push(`/game_groups/${this.roomId}`);
         }
       })
-
-      setInterval(() => {
-                          if (this.totalSecs >= 0)
-                            this.totalSecs--;
-                          else
-                            return;
-
-                          if (this.totalSecs >= 225 && this.totalSecs < 230) {
-                            this.step = 2;
-                          } else if (this.totalSecs >= 220 && this.totalSecs < 225) {
-                            this.step = 3;
-                          } else if (this.totalSecs < 220) {
-                            this.step = 4;
-                          }
-                          const minutes = Math.floor(this.totalSecs/60);
-                          const seconds = this.totalSecs - minutes * 60;
-                          this.timeLeft = this.strPadLeft(minutes,seconds);
-                        }, 1000);
     },
     data: () => ({
-      items: [],
-      groupId: '',
-      totalSecs: 4 * 60,
-      timeLeft: '',
-      step: 1
+      isMod: false,
+      selectedModule: undefined,
+      roomId: '',
+      items: []
     }),
     methods: {
-      updateTimer: function() {
-        this.$router.push('/groups/individual_solution');
-      },
-      strPadLeft: function(minutes,seconds) {
-        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
+      startGame: function() {
+        if (this.isMod) {
+          this.sendMessage(`start-game-groups:${this.roomId}`);
+        }
       }
     }
   }

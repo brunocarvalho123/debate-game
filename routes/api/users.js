@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const global = require('../../common/global.js');
+let global = require('../../common/global');
 
 /**
  * @route   GET api/users/:room_id

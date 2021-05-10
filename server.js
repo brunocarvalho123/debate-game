@@ -11,7 +11,7 @@ const app = express();
 
 const path = require("path");
 
-const global = require('./common/global.js');
+let global = require('./common/global');
 
 
 var corsOptions = {
@@ -45,7 +45,6 @@ wss.on('connection', function connection(ws, req) {
   ws.id = req.headers['sec-websocket-key'];
   ws.on('message', function incoming(data) {
     let responseMessage = '';
-    console.log(`Message received ~> ${data}`)
 
     try {
       const decodedData = data.split(':');
@@ -79,7 +78,6 @@ wss.on('connection', function connection(ws, req) {
           responseMessage = `${decodedData[1]}:start-group-info`;
         } else if (decodedData[0] === 'my-info') {
           let me = {};
-
           for (let i = 0; i < global.usersObject[decodedData[1]].users.length; i++) {
             const e = global.usersObject[decodedData[1]].users[i];
             if (e.client.id == ws.id) {
@@ -93,7 +91,7 @@ wss.on('connection', function connection(ws, req) {
               break;
             }
           }
-          console.log(me);
+
           if (me.name || me.id) {
             responseMessage = `${decodedData[1]}:my-info:${me.id}:${me.name}:${me.group != undefined ? me.group : ''}`;
             ws.send(`${responseMessage}`);
@@ -128,9 +126,10 @@ wss.on('connection', function connection(ws, req) {
           let chosenSolution = {id: 0, nvotes: 0};
           for (let idx = 0; idx < groupSolutions[decodedData[1]]['a'+groupId].length; idx++) {
             let nVotes =  getAllIndexes(global.groups[decodedData[1]][groupId].votes,idx);
-            if (nVotes > chosenSolution.nvotes) {
+            console.log(nVotes);
+            if (nVotes.length > chosenSolution.nvotes) {
               chosenSolution.id = idx;
-              chosenSolution.nvotes = nVotes;
+              chosenSolution.nvotes = nVotes.length;
             }
           }
           responseMessage += `${groupSolutions[decodedData[1]]['a'+groupId][chosenSolution.id]};`;
@@ -163,7 +162,7 @@ wss.on('connection', function connection(ws, req) {
 
       }
     } catch (error) {
-      console.log(`ERROR! ~> ${error}`);
+
     }
   });
   ws.send('You are connected!');
@@ -183,5 +182,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 server.listen(PORT, function() {
-  console.log(`Server is listening on ${PORT}!`)
+
 })

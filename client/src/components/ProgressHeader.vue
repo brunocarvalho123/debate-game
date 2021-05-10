@@ -15,8 +15,8 @@
 
     <div class="risco"></div>
 
-    <div v-if="step==4" class="more-opaco">4. Escola do porta voz</div>
-    <div v-else class="text-div">4. Escola do porta voz</div>
+    <div v-if="step==4" class="more-opaco">4. Escolha do porta voz</div>
+    <div v-else class="text-div">4. Escolha do porta voz</div>
   </div>
 </template>
 
