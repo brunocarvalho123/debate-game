@@ -1,16 +1,16 @@
 <template>
   <div class="main-div">
-    <div class="top-div">
-      <div class="top-buttons">
+    <div class="header-container">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-home-outline
         </v-icon>
         <span class="icon-text">Início</span>
       </div>
-      <div class="top-label">
+      <div class="header-label">
         <ProgressHeader step=3></ProgressHeader>
       </div>
-      <div class="top-buttons">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-information-outline
         </v-icon>

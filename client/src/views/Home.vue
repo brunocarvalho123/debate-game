@@ -1,5 +1,5 @@
 <template>
-  <div class="main-div">
+  <div class="main-div-home">
     <div class="left-side">
       <div class="main-title">Jogo de debate</div>
       <div class="main-button new-game-button" @click="newGame()">
@@ -55,7 +55,7 @@
 </template>
 
 <style scoped>
-  .main-div {
+  .main-div-home {
     display: grid;
     grid-template-columns: 1fr 1fr;
     height: 100vh

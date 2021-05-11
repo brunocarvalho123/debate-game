@@ -1,6 +1,6 @@
 <template>
   <div class="main-div">
-    <div class="top-div">
+    <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-arrow-left-circle-outline

@@ -1,47 +1,47 @@
 <template>
   <div class="main-div">
-    <div class="top-div">
-      <div class="top-buttons">
+    <div class="header-container">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-home-outline
         </v-icon>
         <span class="icon-text">Início</span>
       </div>
-      <div class="top-label">
-        Atividade prática - Explicação geral
+      <div class="header-label">
+        <ProgressHeader step=1></ProgressHeader> MUDAR ISTO
       </div>
-      <div class="top-buttons">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-information-outline
         </v-icon>
         <span class="icon-text">Ajuda</span>
       </div>
     </div>
-    <div class="mid-div">
-      <div class="text-grid">
-        <div class="text-cell">
+    <div class="instructions-container">
+      <div class="instructions-grid">
+        <div class="instructions-text-cell">
+          <div class="text-cell-number hide-stuff">0</div>
+          <div>Bem vindos à sala dos debates finais!</div>
+        </div>
+        <div class="instructions-text-cell">
+          <div class="text-cell-number hide-stuff">0</div>
+          <div class="hide-stuff">placeholder</div>
+        </div>
+        <div class="instructions-text-cell">
           <div class="text-cell-number">1</div>
-          <div>O jogo é realizado através de equipas, que são geradas de forma aleatória.</div>
+          <div>Cada grupo vai enfrentar o seu oponente num debate. Primeiro será apresentado o dilema que será discutido, que poderá ser lido pelo moderador.</div>
         </div>
-        <div class="text-cell">
-          <div class="text-cell-number">2</div>
-          <div>Cada grupo vai ser colocado numa sala privada, onde lhe será apresentado uma dilema para o qual têm de arranjar uma solução.</div>
-        </div>
-        <div class="text-cell">
+        <div class="instructions-text-cell">
           <div class="text-cell-number">3</div>
-          <div>Após x tempo, os grupos serão todos reunidos numa sala comum.</div>
+          <div>Após este tempo terminar, todos os participantes devem votar no grupo que defendeu melhor a sua ideia.</div>
         </div>
-        <div class="text-cell">
+        <div class="instructions-text-cell">
+          <div class="text-cell-number">2</div>
+          <div>De seguida, os dois grupos terão de apresentar a sua solução e argumentar porque é que essa é a melhor, tendo um tempo limitado para o fazer.</div>
+        </div>
+        <div class="instructions-text-cell">
           <div class="text-cell-number">4</div>
-          <div>Na sala comum, cada grupo vai debater com o seu oponente.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">5</div>
-          <div>Após cada debate, todos os participantes devem votar no grupo que defendeu melhor as suas ideias.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">6</div>
-          <div>No final de todos os debates, serão apresentadas as classificações e ganha quem tiver o maior número de pontos.</div>
+          <div>No fim, serão anunciados os vencedores. Quem tiver um maior número de votos ganha. Caso haja empate, o voto do moderador será decisivo. Boa sorte!</div>
         </div>
       </div>
       <DeButton class="button" v-if="isMod" label="Começar jogo" @pressed="startGame"></DeButton>
@@ -129,6 +129,10 @@
   .button {
     position: relative;
     bottom: -9vh;
+  }
+
+  .hide-stuff {
+    visibility: hidden;
   }
 </style>
 

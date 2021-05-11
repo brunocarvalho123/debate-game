@@ -39,6 +39,7 @@
     height: 81.7vh;
     width: 84.3vw;
     margin: 0 auto;
+    justify-content: center; // ver se isto estraga outras paginas
   }
 
   .instructions-grid {
