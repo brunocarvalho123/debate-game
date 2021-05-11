@@ -3,9 +3,9 @@
     <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-arrow-left
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">Slides</span>
       </div>
       <div class="header-label">
         Atividade prática - Explicação geral
@@ -67,7 +67,7 @@
     cursor: pointer;
     color: var(--app-accent);
   }
- 
+
   .continue-button {
     margin-left: 1vh;
     padding: 5px;
