@@ -27,7 +27,6 @@
           <div class="person">Bruno</div>
         </div>
       </div>
-      
     </div>
     <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
   </div>

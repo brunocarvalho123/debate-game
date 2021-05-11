@@ -1,78 +1,58 @@
 <template>
   <div class="main-div">
-    <div class="top-div">
-      <div class="top-buttons">
+     <div class="header-container">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-home-outline
         </v-icon>
         <span class="icon-text">Início</span>
       </div>
-      <div class="top-label">
-        Atividade prática - Explicação geral
+      <div class="header-label">
+        <ProgressHeader step=1></ProgressHeader> MUDAR ISTO (g1 vs g2 | vencedor(es))
       </div>
-      <div class="top-buttons">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-information-outline
         </v-icon>
         <span class="icon-text">Ajuda</span>
       </div>
     </div>
-    <div class="mid-div">
-      <div class="text-grid">
-        <div class="text-cell">
-          <div class="text-cell-number">1</div>
-          <div>O jogo é realizado através de equipas, que são geradas de forma aleatória.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">2</div>
-          <div>Cada grupo vai ser colocado numa sala privada, onde lhe será apresentado uma dilema para o qual têm de arranjar uma solução.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">3</div>
-          <div>Após x tempo, os grupos serão todos reunidos numa sala comum.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">4</div>
-          <div>Na sala comum, cada grupo vai debater com o seu oponente.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">5</div>
-          <div>Após cada debate, todos os participantes devem votar no grupo que defendeu melhor as suas ideias.</div>
-        </div>
-        <div class="text-cell">
-          <div class="text-cell-number">6</div>
-          <div>No final de todos os debates, serão apresentadas as classificações e ganha quem tiver o maior número de pontos.</div>
+    <div class="father-container">
+      <div class="team-left">
+        <h1 class="battle-header"><span class="header-team">Grupo 1</span></h1>
+        <div class="person selected-person">Sofia</div>
+        <div class="person">Pedro</div>
+        <div class="person">Maria</div>
+        <div class="person">Bruno</div>
+      </div>
+      <div class="instructions-container middle-container">
+        <div class="dilema-container">
+          <h2 class="dilema-title">Dilema</h2>
+          <div class="text-grid">
+            <p>Vocês estão a realizar um projeto escolar. Para provar que a ideia do vosso projeto está correta, um de vós diz que precisam de alterar 5 dos 15 números que têm. Caso contrário, terão de recomeçar o projeto. Um de vós decide alterar esses 5 números, apesar de vocês pedirem para que não o faça. 
+              <br><br>Vocês acabam por aceitar a alteração desses números. O vosso professor descobre essa alteração e confronta-vos. O vosso professor diz-vos que, ou um de vós explica o que aconteceu ou todos terão nota negativa. O colega que alterou os números fica em silêncio.  
+            </p>
+            <p>Vocês não querem ter uma nota negativa nem admitir que o vosso colega teve a ideia de alterar os números. 
+              <br><br>Que soluções propõem para lidar com uma situação em que, por um lado sabem que um amigo vosso falsificou dados, e por outro lado sentem um conflito em relação a denunciar essa ação?
+            </p>
+          </div>
         </div>
       </div>
-      <DeButton class="button" v-if="isMod" label="Começar jogo" @pressed="startGame"></DeButton>
+      <div class="team-right">
+        <h1 class="battle-header"><span class="header-team">Grupo 2</span></h1>
+        <div class="person selected-person">Marco</div>
+        <div class="person">Ana</div>
+        <div class="person">Mónica</div>
+        <div class="person">Tiago</div>
+      </div>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
 </template>
 
 <style scoped>
-  .main-div {
-    display: grid;
-    grid-template-rows: 0.1fr 1fr;
-    height: 100vh;
-  }
-  .top-div {
-    height: 11vh;
-    display: flex;
-    color: var(--app-main-blue);
-    font-size: 1.6vw;
-    font-weight: 450;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px -6px #222;
-  }
-  .top-label {
-    margin: 4vh;
-  }
   .icon-text {
     margin-left: 10px;
-  }
-  .top-buttons {
-    margin: 4vh;
   }
 
   .b-icon {
@@ -87,62 +67,96 @@
     cursor: pointer;
     color: var(--app-accent);
   }
-  .mid-div {
-    display: grid;
-    justify-content: center;
-    margin: auto;
-  }
-  .continue-button {
-    margin-left: 1vh;
-    padding: 5px;
-  }
-  .continue-button:hover {
-    cursor: pointer;
-    color: var(--app-accent);
-    text-decoration: underline;
-  }
+  
   .text-grid {
-    margin: -10vh auto auto auto;
+    margin: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    width: 90%;
   }
-  .text-cell {
+
+  div.text-grid > p {
     color: var(--app-main-blue);
-    font-size: 1.2vw;
+    font-size: 1.1vw;
     font-weight: 600;
-    padding-bottom: 6vh;
-    padding-left: 4vw;
-    padding-right: 4vw;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+    margin-bottom: 30px;
     display: flex;
   }
 
-  .text-cell-number {
-    font-size: 2.5vw;
-    color: var(--app-accent);
-    font-weight: 700;
-    position: relative;
-    top: -1vh;
-    margin-right: 1.3vw;
+  .battle-header {
+    margin-bottom: 6vh;
+    display: flex;
+    justify-content: center;
   }
 
-  .button {
-    position: relative;
-    bottom: -9vh;
+  .battle-header span {
+    font-weight: 700;
+    font-size: 1.7vw;
+  }
+
+  .header-vs {
+    color: var(--app-accent);
+    margin: 0 3vw;
+  }
+
+  .dilema-title {
+    padding-left: 1.5vw;
+    font-weight: 700;
+    font-size: 1.3vw;
+    margin-bottom: 3.5vh;
+  }
+
+  .dilema-container {
+    margin: 0 4vw;
+  }
+
+  .father-container {
+    height: 81.7vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 12vw 76vw 12vw;
+    align-items: center;
+  }
+
+  .middle-container {
+    width: 76vw;
+  }
+
+  .team-left {
+    width: 10vw;
+    margin-left: 2vw;
+  }
+
+  .team-right {
+    width: 10vw;
+    margin-right: 2vw;
+  }
+
+  .person {
+    background-color: var(--app-secondary-blue);
+    padding: 2.5vh 4vw;
+    font-weight: bold;
+    margin: 3vh 0;
+    border-radius: 1.5vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .selected-person {
+    border: 3px solid var(--app-accent);
   }
 </style>
 
 <script>
   import Footer from '@/components/Footer.vue';
-  import DeButton from '@/components/DeButton.vue';
   import http from "../http-common";
   import { bus } from '../main';
 
   export default {
     name: 'FinalDiscussion',
     components: {
-     Footer,
-     DeButton
+     Footer
     },
     mounted() {
       this.roomId = this.$route.params.roomId;
