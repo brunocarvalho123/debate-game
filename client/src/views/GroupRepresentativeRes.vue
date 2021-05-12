@@ -3,9 +3,9 @@
     <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-timer-sand
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeader step=4></ProgressHeader>
@@ -21,11 +21,11 @@
       <div class="g_rep_container">
         <div class="person-container">
           <p>O porta voz escolhido foi:</p>
-          <div class="person">Maria</div>
+          <div class="person">{{repName}}</div>
         </div>
         <p>Dentro de um minuto vão começar os debates finais.<br>Podem aproveitar este tempo para preparar o discurso do porta voz.</p>
       </div>
-      
+
     </div>
     <Footer :items="items" :label="'Grupo ' + groupId"></Footer>
   </div>
@@ -35,7 +35,7 @@
   .icon-text {
     margin-left: 10px;
   }
- 
+
   .b-icon {
     margin-bottom: 0.2vh;
   }
@@ -86,10 +86,12 @@
     },
     data: () => ({
       items: [],
-      solutions: [],
+      repName: '',
       roomId: '',
       groupId: '',
-      sent: false
+      timeLeft: 1 * 60,
+      totalTime: 1 * 60,
+      timeLeftStr: ''
     }),
     mounted() {
       this.roomId = this.$route.params.roomId;
@@ -105,26 +107,41 @@
         console.log(err);
       });
 
-      bus.$on('get-group-solutions-voted', (event) => {
+      bus.$on('get-group-rep-voted', (event) => {
         if (event && event.roomId === this.roomId) {
-          let res = event.data[0].split(';,');
-          res[res.length-1] = res[res.length-1].slice(0, -1);
-          for (let idx = 0; idx < res.length; idx++) {
-            const element = res[idx];
-            this.solutions.push({id:idx, text:element});
-          }
-          console.log(event);
+          this.repName = event.data[0];
         }
       });
 
-      bus.$on('group-representative', (event) => {
-        if (event && event.roomId === this.roomId) {
-          this.$router.push(`/groups/group_representative/${this.roomId}/${this.groupId}`);
-        }
-      });
+      this.sendMessage(`get-group-rep-voted:${this.roomId}:${this.groupId-1}`);
 
-      this.sendMessage(`get-group-solutions-voted:${this.roomId}:${this.groupId-1}`);
+      setTimeout(() => {this.goFinalInfo()}, this.totalTime * 1000);
 
+      setInterval(() => {
+                          if (this.timeLeft > 0)
+                            this.timeLeft--;
+                          else
+                            return;
+
+                          if (this.timeLeft >= 225 && this.timeLeft < 230) {
+                            this.step = 2;
+                          } else if (this.timeLeft >= 220 && this.timeLeft < 225) {
+                            this.step = 3;
+                          } else if (this.timeLeft < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.timeLeft/60);
+                          const seconds = this.timeLeft - minutes * 60;
+                          this.timeLeftStr = this.strPadLeft(minutes,seconds);
+                        }, 1000);
+    },
+    methods: {
+      goFinalInfo: function() {
+        this.$router.push(`/final_info/${this.roomId}`);
+      },
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
+      }
     }
   }
 </script>

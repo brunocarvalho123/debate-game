@@ -39,6 +39,7 @@ function getAllIndexes(arr, val) {
 }
 
 let groupSolutions = {};
+let groupRep = {};
 // room_id:msg_type:user1;user2:is_mod
 
 wss.on('connection', function connection(ws, req) {
@@ -126,7 +127,6 @@ wss.on('connection', function connection(ws, req) {
           let chosenSolution = {id: 0, nvotes: 0};
           for (let idx = 0; idx < groupSolutions[decodedData[1]]['a'+groupId].length; idx++) {
             let nVotes =  getAllIndexes(global.groups[decodedData[1]][groupId].votes,idx);
-            console.log(nVotes);
             if (nVotes.length > chosenSolution.nvotes) {
               chosenSolution.id = idx;
               chosenSolution.nvotes = nVotes.length;
@@ -149,6 +149,22 @@ wss.on('connection', function connection(ws, req) {
             }
           } else {
             global.groups[decodedData[1]][groupId].votes = [solutionId];
+          }
+          return;
+        } else if (decodedData[0] === 'representative-vote') {
+          let groupId = decodedData[2];
+          let repId = decodedData[3];
+          if (global.groups[decodedData[1]][groupId].rep_votes && global.groups[decodedData[1]][groupId].rep_votes.length > 0) {
+            global.groups[decodedData[1]][groupId].rep_votes.push(repId);
+            if (global.groups[decodedData[1]][groupId].rep_votes.length >= global.groups[decodedData[1]][groupId].members.length) {
+              responseMessage = `${decodedData[1]}:group-representative-res`;
+              for (let idx = 0; idx < global.groups[decodedData[1]][groupId].members.length; idx++) {
+                const element = global.groups[decodedData[1]][groupId].members[idx];
+                global.usersObject[decodedData[1]].users[element.id].client.send(responseMessage);
+              }
+            }
+          } else {
+            global.groups[decodedData[1]][groupId].rep_votes = [repId];
           }
           return;
         }

@@ -8,7 +8,7 @@
         <span class="icon-text">Início</span>
       </div>
       <div class="header-label">
-        <ProgressHeader step=1></ProgressHeader> MUDAR ISTO
+        <ProgressHeaderFinals step=0></ProgressHeaderFinals>
       </div>
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
@@ -139,6 +139,7 @@
 <script>
   import Footer from '@/components/Footer.vue';
   import DeButton from '@/components/DeButton.vue';
+  import ProgressHeaderFinals from '@/components/ProgressHeaderFinals.vue';
   import http from "../http-common";
   import { bus } from '../main';
 
@@ -146,7 +147,8 @@
     name: 'FinalInfo',
     components: {
      Footer,
-     DeButton
+     DeButton,
+     ProgressHeaderFinals
     },
     mounted() {
       this.roomId = this.$route.params.roomId;

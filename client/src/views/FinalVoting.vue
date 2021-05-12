@@ -8,7 +8,7 @@
         <span class="icon-text">Início</span>
       </div>
       <div class="header-label">
-        <ProgressHeader step=1></ProgressHeader> MUDAR ISTO (g1 vs g2 | vencedor(es))
+        <ProgressHeaderFinals step=1></ProgressHeaderFinals>
       </div>
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
@@ -47,7 +47,7 @@
     cursor: pointer;
     color: var(--app-accent);
   }
-  
+
   div.instructions-container p {
     margin: 0 2vw;
   }
@@ -79,13 +79,15 @@
 
 <script>
   import Footer from '@/components/Footer.vue';
+  import ProgressHeaderFinals from '@/components/ProgressHeaderFinals.vue';
   import http from "../http-common";
   import { bus } from '../main';
 
   export default {
     name: 'FinalVoting',
     components: {
-     Footer
+     Footer,
+     ProgressHeaderFinals
     },
     mounted() {
       this.roomId = this.$route.params.roomId;

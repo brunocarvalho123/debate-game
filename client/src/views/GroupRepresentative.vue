@@ -21,10 +21,10 @@
       <div class="g_rep_container">
         <p>Agora devem votar no colega que vai defender a vossa ideia no debate contra o outro grupo.<br>Caso não votem em ninguém, será escolhido um porta voz aleatoriamente.</p>
         <div class="person-container">
-          <div class="person">Sofia</div>
-          <div class="person">Pedro</div>
-          <div class="person selected-person">Maria</div>
-          <div class="person">Bruno</div>
+          <div v-for="(item, idx) in items" v-bind:key="item.id" @click="voteOnRep" :rep-idx="idx" :rep-id="item.id"
+            :class="item.checked ? 'person selected-person' : 'person'" >
+            {{item.name}}
+          </div>
         </div>
       </div>
     </div>
@@ -36,7 +36,7 @@
   .icon-text {
     margin-left: 10px;
   }
- 
+
   .b-icon {
     margin-bottom: 0.2vh;
   }
@@ -57,8 +57,14 @@
     margin: 0 2vw;
   }
 
+  .person:hover {
+    cursor: pointer;
+    box-shadow: 1px 1px 8px 1px #888888;
+  }
+
   .selected-person {
     border: 3px solid var(--app-accent);
+    box-sizing: border-box;
   }
 
   .g_rep_container {
@@ -103,26 +109,29 @@
         console.log(err);
       });
 
-      bus.$on('get-group-solutions-voted', (event) => {
+      bus.$on('group-representative-res', (event) => {
         if (event && event.roomId === this.roomId) {
-          let res = event.data[0].split(';,');
-          res[res.length-1] = res[res.length-1].slice(0, -1);
-          for (let idx = 0; idx < res.length; idx++) {
-            const element = res[idx];
-            this.solutions.push({id:idx, text:element});
-          }
-          console.log(event);
+          this.$router.push(`/groups/group_representative_res/${this.roomId}/${this.groupId}`);
         }
       });
-
-      bus.$on('group-representative', (event) => {
-        if (event && event.roomId === this.roomId) {
-          this.$router.push(`/groups/group_representative/${this.roomId}/${this.groupId}`);
+    },
+    methods: {
+      voteOnRep: function(event) {
+        // debugger; // eslint-disable-line no-debugger
+        if (event && event.target && event.composedPath().filter(e=>e.className == 'person').length > 0 && !this.sent) {
+          this.sendMessage(`representative-vote:${this.roomId}:${this.groupId-1}:${event.target.getAttribute('rep-id')}`);
+          let tmpSolut = this.items;
+          tmpSolut[+event.target.getAttribute('rep-idx')].checked = true;
+          this.items = JSON.parse(JSON.stringify(tmpSolut));
+          this.sent = true;
+        } else {
+          this.sendMessage(`representative-vote:${this.roomId}:${this.groupId-1}:0`);
+          this.sent = true;
         }
-      });
-
-      this.sendMessage(`get-group-solutions-voted:${this.roomId}:${this.groupId-1}`);
-
+      },
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
+      }
     }
   }
 </script>
