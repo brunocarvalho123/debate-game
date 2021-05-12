@@ -3,9 +3,9 @@
     <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-timer-sand
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeader step=3></ProgressHeader>
@@ -120,7 +120,10 @@
       solutions: [],
       roomId: '',
       groupId: '',
-      sent: false
+      sent: false,
+      timeLeft: 3 * 60,
+      totalTime: 3 * 60,
+      timeLeftStr: ''
     }),
     mounted() {
       this.roomId = this.$route.params.roomId;
@@ -156,6 +159,34 @@
 
       this.sendMessage(`get-group-solutions-voted:${this.roomId}:${this.groupId-1}`);
 
+      setTimeout(() => {this.goRepresentative()}, this.totalTime * 1000);
+
+      setInterval(() => {
+                          if (this.timeLeft > 0)
+                            this.timeLeft--;
+                          else
+                            return;
+
+                          if (this.timeLeft >= 225 && this.timeLeft < 230) {
+                            this.step = 2;
+                          } else if (this.timeLeft >= 220 && this.timeLeft < 225) {
+                            this.step = 3;
+                          } else if (this.timeLeft < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.timeLeft/60);
+                          const seconds = this.timeLeft - minutes * 60;
+                          this.timeLeftStr = this.strPadLeft(minutes,seconds);
+                        }, 1000);
+
+    },
+    methods: {
+      goRepresentative: function() {
+        this.$router.push(`/groups/group_representative/${this.roomId}/${this.groupId}`);
+      },
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
+      }
     }
   }
 </script>

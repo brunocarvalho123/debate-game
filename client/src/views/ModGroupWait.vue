@@ -154,7 +154,7 @@
       })
 
       setInterval(() => {
-                          if (this.totalSecs >= 0)
+                          if (this.totalSecs > 0)
                             this.totalSecs--;
                           else
                             return;

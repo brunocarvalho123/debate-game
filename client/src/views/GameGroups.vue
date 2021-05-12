@@ -3,7 +3,7 @@
     <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-arrow-left-circle-outline
+          mdi-arrow-left
         </v-icon>
         <span class="icon-text">Explicação</span>
       </div>
@@ -58,7 +58,7 @@
   .icon-text {
     margin-left: 10px;
   }
- 
+
   .b-icon {
     margin-bottom: 0.2vh;
   }

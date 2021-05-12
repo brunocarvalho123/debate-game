@@ -3,9 +3,9 @@
     <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-timer-sand
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeader step=1></ProgressHeader>
@@ -21,10 +21,10 @@
       <div>
         <h2 class="mid-div-header">Dilema</h2>
         <div class="text-grid">
-          <p>Vocês estão a realizar um projeto escolar. Para provar que a ideia do vosso projeto está correta, um de vós diz que precisam de alterar 5 dos 15 números que têm. Caso contrário, terão de recomeçar o projeto. Um de vós decide alterar esses 5 números, apesar de vocês pedirem para que não o faça. 
-            <br><br>Vocês acabam por aceitar a alteração desses números. O vosso professor descobre essa alteração e confronta-vos. O vosso professor diz-vos que, ou um de vós explica o que aconteceu ou todos terão nota negativa. O colega que alterou os números fica em silêncio.  
+          <p>Vocês estão a realizar um projeto escolar. Para provar que a ideia do vosso projeto está correta, um de vós diz que precisam de alterar 5 dos 15 números que têm. Caso contrário, terão de recomeçar o projeto. Um de vós decide alterar esses 5 números, apesar de vocês pedirem para que não o faça.
+            <br><br>Vocês acabam por aceitar a alteração desses números. O vosso professor descobre essa alteração e confronta-vos. O vosso professor diz-vos que, ou um de vós explica o que aconteceu ou todos terão nota negativa. O colega que alterou os números fica em silêncio.
           </p>
-          <p>Vocês não querem ter uma nota negativa nem admitir que o vosso colega teve a ideia de alterar os números. 
+          <p>Vocês não querem ter uma nota negativa nem admitir que o vosso colega teve a ideia de alterar os números.
             <br><br>Que soluções propõem para lidar com uma situação em que, por um lado sabem que um amigo vosso falsificou dados, e por outro lado sentem um conflito em relação a denunciar essa ação?
           </p>
         </div>
@@ -45,7 +45,7 @@
   .icon-text {
     margin-left: 10px;
   }
- 
+
   .b-icon {
     margin-bottom: 0.2vh;
   }
@@ -146,7 +146,10 @@
       roomId: '',
       groupId: '',
       sent: false,
-      threeDots: '.'
+      threeDots: '.',
+      timeLeft: 3 * 60,
+      totalTime: 3 * 60,
+      timeLeftStr: ''
     }),
     mounted() {
       this.roomId = this.$route.params.roomId;
@@ -169,14 +172,37 @@
       });
 
       setInterval(() => {if (this.threeDots.length < 3) {this.threeDots += '.'} else this.threeDots = '.'}, 750);
+
+      setTimeout(() => {this.solution='Não respondeu'; this.sendSolution();}, this.totalTime * 1000);
+
+      setInterval(() => {
+                          if (this.timeLeft > 0)
+                            this.timeLeft--;
+                          else
+                            return;
+
+                          if (this.timeLeft >= 225 && this.timeLeft < 230) {
+                            this.step = 2;
+                          } else if (this.timeLeft >= 220 && this.timeLeft < 225) {
+                            this.step = 3;
+                          } else if (this.timeLeft < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.timeLeft/60);
+                          const seconds = this.timeLeft - minutes * 60;
+                          this.timeLeftStr = this.strPadLeft(minutes,seconds);
+                        }, 1000);
     },
     methods: {
       sendSolution: function() {
         // debugger; // eslint-disable-line no-debugger
-        if (this.solution && this.solution.length > 5) {
+        if (this.solution && this.solution.length > 5 && this.sent === false) {
           this.sendMessage(`individual-solution:${this.roomId}:${this.groupId-1}:${this.solution}`);
           this.sent = true;
         }
+      },
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
       }
     }
   }

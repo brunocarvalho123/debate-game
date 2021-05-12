@@ -3,9 +3,9 @@
     <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-timer-sand
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeader step=2></ProgressHeader>
@@ -22,11 +22,11 @@
         <div class="paper-sticker">
           <img src="sticker_img.svg" class="sticker-img" alt="sticker img">
         </div>
-        <div v-if="solution.checked" class="check-sticker"></div>
-        <div class="solution-div" @click="voteOnSolution" :solution-id="solution.id">
+        <div class="solution-div">
           <span class="text-span">{{solution.text}}</span>
-          <img src="note_img.svg" class="solution-img" alt="texture img">
+          <img src="note_img.svg" class="solution-img" @click="voteOnSolution" :solution-id="solution.id" alt="texture img">
         </div>
+        <img v-if="solution.checked" src="maneta-img.svg" class="check-sticker" alt="sticker img">
       </div>
       <div class="coiso-div">
         <div class="paper-sticker">
@@ -92,16 +92,18 @@
   }
 
   .check-sticker {
-    height: 5vh;
-    width: 5vh;
-    background-color: green;
+    height: 7vh;
+    width: 6.3vh;
     position: absolute;
     margin-top: -2.5vh;
-    margin-left: 25vw;
+    margin-left: 21vw;
   }
   .coiso-div {
     display: flex;
     justify-content: center;
+    transform: scale(0.9);
+    transform-origin: 25% 30%;
+    transition: transform 200ms ease-out;
   }
   .text-span {
     overflow: hidden;
@@ -138,7 +140,10 @@
       solutions: [],
       roomId: '',
       groupId: '',
-      sent: false
+      sent: false,
+      timeLeft: 3 * 60,
+      totalTime: 3 * 60,
+      timeLeftStr: ''
     }),
     mounted() {
       this.roomId = this.$route.params.roomId;
@@ -162,7 +167,6 @@
             const element = res[idx];
             this.solutions.push({id:idx, text:element});
           }
-          console.log(event);
         }
       });
 
@@ -172,24 +176,53 @@
         }
       });
 
-      // this.sendMessage(`get-group-solutions:${this.roomId}:${this.groupId-1}`);
+      this.sendMessage(`get-group-solutions:${this.roomId}:${this.groupId-1}`);
 
-      const divCoisos = document.querySelectorAll('.coiso-div');
-      for (const div of divCoisos) {
-        const randomNumber = Math.floor(Math.random() * (5 - (-5) + 1) + (-5));
-        div.style.transform = `rotate(${randomNumber}deg)`;
-      }
+      setTimeout(() => {
+        const divCoisos = document.querySelectorAll('.coiso-div');
+        for (const div of divCoisos) {
+          const randomNumber = Math.floor(Math.random() * (5 - (-5) + 1) + (-5));
+          div.style.transform = `scale(1) rotate(${randomNumber}deg)`;
+        }
+      }, 100);
+
+      setTimeout(() => {this.voteOnSolution();}, this.totalTime * 1000);
+
+      setInterval(() => {
+                          if (this.timeLeft > 0)
+                            this.timeLeft--;
+                          else
+                            return;
+
+                          if (this.timeLeft >= 225 && this.timeLeft < 230) {
+                            this.step = 2;
+                          } else if (this.timeLeft >= 220 && this.timeLeft < 225) {
+                            this.step = 3;
+                          } else if (this.timeLeft < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.timeLeft/60);
+                          const seconds = this.timeLeft - minutes * 60;
+                          this.timeLeftStr = this.strPadLeft(minutes,seconds);
+                        }, 1000);
+
     },
     methods: {
       voteOnSolution: function(event) {
         // debugger; // eslint-disable-line no-debugger
-        if (event && event.target && event.target.className === "solution-div" && !this.sent) {
+        if (event && event.target && event.composedPath().filter(e=>e.className == 'solution-div').length > 0 && !this.sent) {
           this.sendMessage(`individual-vote:${this.roomId}:${this.groupId-1}:${event.target.getAttribute('solution-id')}`);
           let tmpSolut = this.solutions;
           tmpSolut[+event.target.getAttribute('solution-id')].checked = true;
           this.solutions = JSON.parse(JSON.stringify(tmpSolut));
           this.sent = true;
+        } else {
+          this.sendMessage(`individual-vote:${this.roomId}:${this.groupId-1}:0`);
+          this.sent = true;
         }
+      },
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
       }
     }
   }
