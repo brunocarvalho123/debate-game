@@ -40,6 +40,8 @@ function getAllIndexes(arr, val) {
 
 let groupSolutions = {};
 let groupRep = {};
+
+let groupTime = 2 * 60 * 1000; // 20 minutes
 // room_id:msg_type:user1;user2:is_mod
 
 wss.on('connection', function connection(ws, req) {
@@ -55,6 +57,7 @@ wss.on('connection', function connection(ws, req) {
         global.usersObject[decodedData[1]] = {users: [], mod: ws};
         responseMessage = `${decodedData[1]}:users::true`;
         global.usersObject[decodedData[1]].mod.send(responseMessage);
+        global.usersObject[decodedData[1]].time = groupTime;
       } else if (decodedData[0]) {
         if (decodedData[0] === 'join') {
           global.usersObject[decodedData[1]].users.push({name: decodedData[2], client: ws});
@@ -67,6 +70,10 @@ wss.on('connection', function connection(ws, req) {
           responseMessage = `${decodedData[1]}:previous-slide`;
         } else if (decodedData[0] === 'start-game-instructions') {
           responseMessage = `${decodedData[1]}:start-game-instructions`;
+        } else if (decodedData[0] === 'final-theme-intro') {
+          responseMessage = `${decodedData[1]}:final-theme-intro`;
+        } else if (decodedData[0] === 'start-final-discussion') {
+          responseMessage = `${decodedData[1]}:start-final-discussion`;
         } else if (decodedData[0] === 'start-game-groups') {
           responseMessage = `${decodedData[1]}:start-game-groups`;
           groupSolutions[decodedData[1]] = {};
@@ -77,6 +84,18 @@ wss.on('connection', function connection(ws, req) {
           global.groups[decodedData[1]] = rivals1
         } else if (decodedData[0] === 'start-group-info') {
           responseMessage = `${decodedData[1]}:start-group-info`;
+          setTimeout(() => {
+            let goFinalsMessage = `${decodedData[1]}:start-finals`;
+            if (goFinalsMessage) {
+              global.usersObject[decodedData[1]].users.forEach(function each(obj) {
+                if (obj.client.readyState === WebSocket.OPEN) obj.client.send(goFinalsMessage);
+              });
+              global.usersObject[decodedData[1]].mod.send(`${goFinalsMessage}:true`);
+            }
+            console.log('to finals!!!');
+          }, global.usersObject[decodedData[1]].time);
+          setInterval(() => {if (global.usersObject[decodedData[1]].time > 1000) global.usersObject[decodedData[1]].time = global.usersObject[decodedData[1]].time - 1000;}, 1000);
+
         } else if (decodedData[0] === 'my-info') {
           let me = {};
           for (let i = 0; i < global.usersObject[decodedData[1]].users.length; i++) {
@@ -133,6 +152,20 @@ wss.on('connection', function connection(ws, req) {
             }
           }
           responseMessage += `${groupSolutions[decodedData[1]]['a'+groupId][chosenSolution.id]};`;
+          ws.send(responseMessage);
+          return;
+        } else if (decodedData[0] === 'get-group-rep-voted') {
+          let groupId = decodedData[2];
+          responseMessage = `${decodedData[1]}:get-group-rep-voted:`;
+          let chosenSolution = {id: 0, nvotes: 0};
+          for (let idx = 0; idx < global.groups[decodedData[1]][groupId].members.length; idx++) {
+            let nVotes =  getAllIndexes(global.groups[decodedData[1]][groupId].rep_votes,idx);
+            if (nVotes.length > chosenSolution.nvotes) {
+              chosenSolution.id = idx;
+              chosenSolution.nvotes = nVotes.length;
+            }
+          }
+          responseMessage += `${global.groups[decodedData[1]][groupId].members[chosenSolution.id].name}:${global.usersObject[decodedData[1]].time}`;
           ws.send(responseMessage);
           return;
         } else if (decodedData[0] === 'individual-vote') {

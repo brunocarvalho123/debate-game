@@ -89,8 +89,7 @@
       repName: '',
       roomId: '',
       groupId: '',
-      timeLeft: 1 * 60,
-      totalTime: 1 * 60,
+      timeLeft: 0,
       timeLeftStr: ''
     }),
     mounted() {
@@ -110,14 +109,8 @@
       bus.$on('get-group-rep-voted', (event) => {
         if (event && event.roomId === this.roomId) {
           this.repName = event.data[0];
-        }
-      });
-
-      this.sendMessage(`get-group-rep-voted:${this.roomId}:${this.groupId-1}`);
-
-      setTimeout(() => {this.goFinalInfo()}, this.totalTime * 1000);
-
-      setInterval(() => {
+          this.timeLeft = (+event.data[1])/1000;
+          setInterval(() => {
                           if (this.timeLeft > 0)
                             this.timeLeft--;
                           else
@@ -134,6 +127,17 @@
                           const seconds = this.timeLeft - minutes * 60;
                           this.timeLeftStr = this.strPadLeft(minutes,seconds);
                         }, 1000);
+        }
+      });
+
+      bus.$on('start-finals', (event) => {
+        if (event && event.roomId === this.roomId) {
+          this.goFinalInfo();
+        }
+      });
+      this.sendMessage(`get-group-rep-voted:${this.roomId}:${this.groupId-1}`);
+
+
     },
     methods: {
       goFinalInfo: function() {

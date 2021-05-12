@@ -34,6 +34,7 @@
           </p>
         </div>
       </div>
+      <DeButton class="button" v-if="isMod" label="Começar debate" @pressed="startDiscussion"></DeButton>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
@@ -105,6 +106,7 @@
 
 <script>
   import Footer from '@/components/Footer.vue';
+  import DeButton from '@/components/DeButton.vue';
   import ProgressHeaderFinals from '@/components/ProgressHeaderFinals.vue';
   import http from "../http-common";
   import { bus } from '../main';
@@ -113,6 +115,7 @@
     name: 'FinalThemeIntro',
     components: {
      Footer,
+     DeButton,
      ProgressHeaderFinals
     },
     mounted() {
@@ -137,22 +140,21 @@
         console.log(err);
       });
 
-      bus.$on('start-game-groups', (event) => {
+      bus.$on('start-final-discussion', (event) => {
         if (event && event.roomId === this.roomId) {
-          this.$router.push(`/game_groups/${this.roomId}`);
+          this.$router.push(`/final_discussion/${this.roomId}`);
         }
       })
     },
     data: () => ({
       isMod: false,
-      selectedModule: undefined,
       roomId: '',
       items: []
     }),
     methods: {
-      startGame: function() {
+      startDiscussion: function() {
         if (this.isMod) {
-          this.sendMessage(`start-game-groups:${this.roomId}`);
+          this.sendMessage(`start-final-discussion:${this.roomId}`);
         }
       }
     }

@@ -44,7 +44,7 @@
           <div>No fim, serão anunciados os vencedores. Quem tiver um maior número de votos ganha. Caso haja empate, o voto do moderador será decisivo. Boa sorte!</div>
         </div>
       </div>
-      <DeButton class="button" v-if="isMod" label="Começar jogo" @pressed="startGame"></DeButton>
+      <DeButton class="button" v-if="isMod" label="Começar debate" @pressed="startDiscussion"></DeButton>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
   </div>
@@ -172,22 +172,21 @@
         console.log(err);
       });
 
-      bus.$on('start-game-groups', (event) => {
+      bus.$on('final-theme-intro', (event) => {
         if (event && event.roomId === this.roomId) {
-          this.$router.push(`/game_groups/${this.roomId}`);
+          this.$router.push(`/final_theme_intro/${this.roomId}`);
         }
       })
     },
     data: () => ({
       isMod: false,
-      selectedModule: undefined,
       roomId: '',
       items: []
     }),
     methods: {
-      startGame: function() {
+      startDiscussion: function() {
         if (this.isMod) {
-          this.sendMessage(`start-game-groups:${this.roomId}`);
+          this.sendMessage(`final-theme-intro:${this.roomId}`);
         }
       }
     }

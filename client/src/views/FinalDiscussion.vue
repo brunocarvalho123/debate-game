@@ -3,9 +3,9 @@
      <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-timer-sand
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeaderFinals step=1></ProgressHeaderFinals>
@@ -20,10 +20,10 @@
     <div class="father-container">
       <div class="team-left">
         <h1 class="battle-header"><span class="header-team">Grupo 1</span></h1>
-        <div class="person selected-person">Sofia</div>
-        <div class="person">Pedro</div>
-        <div class="person">Maria</div>
-        <div class="person">Bruno</div>
+          <div v-for="(item) in group1" v-bind:key="item.id"
+            :class="item.checked ? 'person selected-person' : 'person'" >
+            {{item.name}}
+          </div>
       </div>
       <div class="instructions-container middle-container">
         <div class="dilema-container">
@@ -40,10 +40,10 @@
       </div>
       <div class="team-right">
         <h1 class="battle-header"><span class="header-team">Grupo 2</span></h1>
-        <div class="person selected-person">Marco</div>
-        <div class="person">Ana</div>
-        <div class="person">Mónica</div>
-        <div class="person">Tiago</div>
+        <div v-for="(item) in group2" v-bind:key="item.id"
+          :class="item.checked ? 'person selected-person' : 'person'" >
+          {{item.name}}
+        </div>
       </div>
     </div>
     <Footer :items="items" label="Participantes"></Footer>
@@ -160,6 +160,17 @@
      Footer,
      ProgressHeaderFinals
     },
+    data: () => ({
+      isMod: false,
+      selectedModule: undefined,
+      roomId: '',
+      items: [],
+      group1: [],
+      group2: [],
+      timeLeft: 5 * 60,
+      totalTime: 5 * 60,
+      timeLeftStr: ''
+    }),
     mounted() {
       this.roomId = this.$route.params.roomId;
       if (this.roomId.length !== 6) this.$router.push(`/`);
@@ -182,23 +193,44 @@
         console.log(err);
       });
 
-      bus.$on('start-game-groups', (event) => {
-        if (event && event.roomId === this.roomId) {
-          this.$router.push(`/game_groups/${this.roomId}`);
+      http.get(`/groups/${this.roomId}`).then(response => {
+        if (response && response.data && response.data.length > 0) {
+          this.group1 = response.data[0].members;
+          this.group1[0].checked = true;
+          this.group2 = response.data[1].members;
+          this.group2[0].checked = true;
         }
-      })
+      }).catch(err => {
+        console.log(err);
+      });
+
+
+      setTimeout(() => {this.goVoting()}, this.totalTime * 1000);
+
+      setInterval(() => {
+                          if (this.timeLeft > 0)
+                            this.timeLeft--;
+                          else
+                            return;
+
+                          if (this.timeLeft >= 225 && this.timeLeft < 230) {
+                            this.step = 2;
+                          } else if (this.timeLeft >= 220 && this.timeLeft < 225) {
+                            this.step = 3;
+                          } else if (this.timeLeft < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.timeLeft/60);
+                          const seconds = this.timeLeft - minutes * 60;
+                          this.timeLeftStr = this.strPadLeft(minutes,seconds);
+                        }, 1000);
     },
-    data: () => ({
-      isMod: false,
-      selectedModule: undefined,
-      roomId: '',
-      items: []
-    }),
     methods: {
-      startGame: function() {
-        if (this.isMod) {
-          this.sendMessage(`start-game-groups:${this.roomId}`);
-        }
+      goVoting: function() {
+        this.$router.push(`/final_voting/${this.roomId}`);
+      },
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
       }
     }
   }

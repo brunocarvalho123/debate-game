@@ -147,11 +147,11 @@
         console.log(err);
       });
 
-      bus.$on('start-final-info', (event) => {
+      bus.$on('start-finals', (event) => {
         if (event && event.roomId === this.roomId) {
-          this.$router.push(`/final_info/${this.roomId}`);
+          this.goFinalInfo();
         }
-      })
+      });
 
       setInterval(() => {
                           if (this.totalSecs > 0)
@@ -174,13 +174,13 @@
     data: () => ({
       items: [],
       groupId: '',
-      totalSecs: 4 * 60,
+      totalSecs: 2 * 60,
       timeLeft: '',
       step: 1
     }),
     methods: {
-      updateTimer: function() {
-        this.$router.push('/groups/individual_solution');
+      goFinalInfo: function() {
+        this.$router.push(`/final_info/${this.roomId}`);
       },
       strPadLeft: function(minutes,seconds) {
         return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);

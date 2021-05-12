@@ -186,7 +186,7 @@
         }
       }, 100);
 
-      setTimeout(() => {this.voteOnSolution();}, this.totalTime * 1000);
+      setTimeout(() => {if (this.sent === false) this.voteOnSolution();}, this.totalTime * 1000);
 
       setInterval(() => {
                           if (this.timeLeft > 0)

@@ -3,9 +3,9 @@
     <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-timer-sand
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeaderFinals step=1></ProgressHeaderFinals>
@@ -21,8 +21,11 @@
       <div class="g_rep_container">
         <p>Quem defendeu melhor a sua ideia?</p>
         <div class="person-container">
-          <div class="person selected-person">Grupo 1</div>
-          <div class="person">Grupo 2</div>
+          <div v-for="(item) in groups" v-bind:key="item.id" @click="voteOnGroup" :rep-id="item.id"
+            :class="item.selected ? 'person selected-person' : 'person'" >
+            {{item.name}}
+          </div>
+
         </div>
       </div>
     </div>
@@ -111,22 +114,52 @@
         console.log(err);
       });
 
-      bus.$on('start-game-groups', (event) => {
-        if (event && event.roomId === this.roomId) {
-          this.$router.push(`/game_groups/${this.roomId}`);
-        }
-      })
+      setTimeout(() => {this.goFinalResults()}, this.totalTime * 1000);
+
+      setInterval(() => {
+                          if (this.timeLeft > 0)
+                            this.timeLeft--;
+                          else
+                            return;
+
+                          if (this.timeLeft >= 225 && this.timeLeft < 230) {
+                            this.step = 2;
+                          } else if (this.timeLeft >= 220 && this.timeLeft < 225) {
+                            this.step = 3;
+                          } else if (this.timeLeft < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.timeLeft/60);
+                          const seconds = this.timeLeft - minutes * 60;
+                          this.timeLeftStr = this.strPadLeft(minutes,seconds);
+                        }, 1000);
     },
     data: () => ({
       isMod: false,
       selectedModule: undefined,
       roomId: '',
-      items: []
+      items: [],
+      groups: [{name: 'Grupo 1', id: 0, selected: false}, {name: 'Grupo 2', id: 1, selected: false}],
+      timeLeft: 1 * 60,
+      totalTime: 1 * 60,
+      timeLeftStr: ''
     }),
     methods: {
-      startGame: function() {
+      goFinalResults: function() {
         if (this.isMod) {
-          this.sendMessage(`start-game-groups:${this.roomId}`);
+          this.$router.push(`/final_results/${this.roomId}`);
+        }
+      },
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
+      },
+      voteOnGroup: function(event) {
+        const blah = event.target.getAttribute('rep-id');
+        for (let idx = 0; idx < this.groups.length; idx++) {
+          let ssss = this.groups;
+          ssss[idx].selected = false;
+          if (idx == blah) ssss[idx].selected = true;
+          this.groups = JSON.parse(JSON.stringify(ssss));
         }
       }
     }

@@ -121,8 +121,8 @@
       roomId: '',
       groupId: '',
       sent: false,
-      timeLeft: 3 * 60,
-      totalTime: 3 * 60,
+      timeLeft: 1 * 10,
+      totalTime: 1 * 10,
       timeLeftStr: ''
     }),
     mounted() {
