@@ -1,46 +1,44 @@
 <template>
   <div class="main-div">
-    <div class="top-div">
-      <div class="top-buttons">
+    <div class="header-container">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-home-outline
         </v-icon>
         <span class="icon-text">Início</span>
       </div>
-      <div class="top-buttons">
+      <div class="header-label">Criação de novo jogo</div>
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-information-outline
         </v-icon>
         <span class="icon-text">Ajuda</span>
       </div>
     </div>
-    <div class="mid-div">
-      <v-select class="module-select" v-model="selectedModule" :items="modules" label="Selecione o módulo" outlined></v-select>
-      <DeButton class="button" label="Criar jogo" @pressed="createRoom"></DeButton>
+
+
+    <div class="father-container">
+      <div class="team-left">
+        <img src="pencils.svg" class="home-img" alt="">
+      </div>
+      <div class="instructions-container middle-container">
+        <div class="mid-div">
+          <v-select class="module-select" v-model="selectedModule" :items="modules" label="Selecione o módulo" outlined></v-select>
+          <DeButton class="button" label="Criar jogo" @pressed="createRoom"></DeButton>
+        </div>
+      </div>
+      <div class="team-right">
+        <img src="books.svg" class="home-img" alt="">
+      </div>
     </div>
+
+
   </div>
 </template>
 
 <style scoped>
-  .main-div {
-    display: grid;
-    grid-template-rows: 0.1fr 1fr;
-    height: 100vh;
-  }
-  .top-div {
-    height: 11vh;
-    display: flex;
-    color: var(--app-main-blue);
-    font-size: 1.6vw;
-    font-weight: 450;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px -6px #222;
-  }
   .icon-text {
     margin-left: 10px;
-  }
-  .top-buttons {
-    margin: 4vh;
   }
   .mid-div {
     display: grid;
@@ -51,8 +49,41 @@
     width: 35vw;
     margin-top: -12vh !important;
   }
+
   .button {
-    margin-bottom: -30vh;
+    margin-bottom: -35vh;
+  }
+
+  .father-container {
+    height: 89.7vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 25vw 50vw 25vw;
+    align-items: center;
+  }
+
+  .middle-container {
+    width: 40vw;
+  }
+
+  .team-left {
+    width: 19vw;
+    margin-left: 6vw;
+    /* background-color: pink; */
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    opacity: 50%;
+  }
+
+  .team-right {
+    width: 19vw;
+    margin-right: 6vw;
+    /* background-color: pink; */
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    opacity: 50%;
   }
 </style>
 

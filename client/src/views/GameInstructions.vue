@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="instructions-container">
-      <div class="instructions-grid">
+      <div class="instructions-grid align-grid">
         <div class="instructions-text-cell">
           <div class="text-cell-number">1</div>
           <div>O jogo é realizado através de equipas, que são geradas de forma aleatória.</div>
@@ -90,6 +90,10 @@
   .button {
     position: relative;
     /* bottom: -9vh; */
+  }
+
+  .align-grid {
+    margin: 5vh 0;
   }
 </style>
 

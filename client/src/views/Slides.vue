@@ -40,23 +40,9 @@
     /* grid-template-rows: 0.1fr 1fr; */
     height: 100vh;
   }
-  .top-div {
-    height: 11vh;
-    display: flex;
-    color: var(--app-main-blue);
-    font-size: 1.6vw;
-    font-weight: 450;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px -6px #222;
-  }
-  .top-label {
-    margin: 4vh;
-  }
+
   .icon-text {
     margin-left: 10px;
-  }
-  .top-buttons {
-    margin: 4vh;
   }
 
   .b-icon {
@@ -84,7 +70,7 @@
   .slide-container {
     margin: 0 auto;
     width: 83vw;
-    height: 70vh;
+    height: 81.5vh;
     display: flex;
     justify-content: center;
     align-self: center;

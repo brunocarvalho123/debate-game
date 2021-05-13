@@ -36,7 +36,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <DeButton class="button" label="Continuar" v-if="isMod" @pressed="goToGroups"></DeButton>
     </div>
@@ -45,16 +44,6 @@
 </template>
 
 <style scoped>
-  .top-div {
-    height: 11vh;
-    display: flex;
-    color: var(--app-main-blue);
-    font-size: 1.6vw;
-    font-weight: 450;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px -6px #222;
-  }
-
   .icon-text {
     margin-left: 10px;
   }

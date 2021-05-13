@@ -66,10 +66,10 @@
   }
 
   .mid-div-header {
-    padding-left: 4vw;
+    padding-left: 1.5vw;
     font-weight: 700;
     font-size: 1.5vw;
-    margin-bottom: 25px;
+    margin-bottom: 3vh;
   }
 
   .continue-button {
@@ -92,8 +92,8 @@
     color: var(--app-main-blue);
     font-size: 1.1vw;
     font-weight: 600;
-    padding-left: 4vw;
-    padding-right: 4vw;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
     margin-bottom: 30px;
     display: flex;
   }

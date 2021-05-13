@@ -1,14 +1,14 @@
 <template>
   <div class="main-div">
-    <div class="top-div">
-      <div class="top-buttons">
+    <div class="header-container">
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-home-outline
         </v-icon>
         <span class="icon-text">Início</span>
       </div>
-      <div class="top-label">A aguardar jogadores... {{items.length}} / 30</div>
-      <div class="top-buttons">
+      <div class="header-label">A aguardar jogadores... {{items.length}} / 30</div>
+      <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-information-outline
         </v-icon>
@@ -50,29 +50,10 @@
 </template>
 
 <style scoped>
-  .main-div {
-    display: grid;
-    grid-template-rows: 0.1fr 1fr;
-    height: 100vh;
-  }
-  .top-div {
-    height: 11vh;
-    display: flex;
-    color: var(--app-main-blue);
-    font-size: 1.6vw;
-    font-weight: 450;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px -6px #222;
-  }
-  .top-label {
-    margin: 4vh;
-  }
   .icon-text {
     margin-left: 10px;
   }
-  .top-buttons {
-    margin: 4vh;
-  }
+
   .mid-div {
     display: grid;
     justify-content: center;
@@ -95,19 +76,18 @@
     height: 60vh;
     width: 90vw;
     border-radius: 10px;
-    border: 2px solid var(--app-detail);
+    border: 1px solid var(--app-detail);
     padding-top: 2vh;
     padding-bottom: 2vh;
   }
   .name-block {
     width: 10vw;
-    height: 4vw;
+    height: 4.5vw;
     background-color: var(--app-secondary-blue);
     border-radius: 10px;
-    border: 1px solid var(--app-detail);
     color: var(--app-main-blue);
     font-size: 1.4vw;
-    font-weight: 450;
+    font-weight: 600;
     overflow: hidden;
     display: flex;
     justify-content: center;

@@ -27,6 +27,7 @@
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 0px 15px 5px rgb(0, 0, 0, 10%);
+    z-index: 1;
   }
 
   .header-buttons, .header-label {
