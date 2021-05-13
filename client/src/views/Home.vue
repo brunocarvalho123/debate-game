@@ -14,15 +14,13 @@
 
       <div class="div-inline-flex">
         <div class="join-btn-container">
-          <v-text-field class="join-btn-label" prepend-inner-icon="mdi-keyboard" color="var(--org-blue)" label="Insira o código de acesso" v-model="accessCode" @focus="focusInput"></v-text-field>
-          <div class="container-hr"></div>
+          <v-icon size="2vw" class="kb-icon">mdi-keyboard</v-icon>
+          <input class="join-btn-label" type="text" placeholder="Insira o código de acesso" size="25" v-model="accessCode" @focus="focusInput" name="asdasds">
+
+          <!-- <v-text-field class="join-btn-label" prepend-inner-icon="mdi-keyboard" color="var(--org-blue)" label="Insira o código de acesso"  @focus="focusInput"></v-text-field> -->
         </div>
         <transition name="fade">
-          <div key=1 v-if="joinNormal" class="main-button join-game-button" @click="nameDialog=true">
-            <span>
-              Juntar
-            </span>
-          </div>
+          <div key=1 v-if="joinNormal" class="join-game-button" @click="nameDialog=true">Juntar</div>
         </transition>
       </div>
 
@@ -101,14 +99,20 @@
     color: var(--app-background);
   }
   .join-game-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--app-background);
     color: var(--app-main-blue);
-    width: 20%;
-    margin-left: 1vw;
-    height: 6.5vh;
     width: 6vw;
     font-size: 1.2vw;
     border: none;
+  }
+  .join-game-button:hover {
+    cursor: pointer;
+  }
+  .kb-icon {
+    margin-left: 0.5vw;
   }
   .home-img {
     width: 26vw;
@@ -123,7 +127,6 @@
     border-radius: 10px;
     border: 2px solid var(--app-main-blue);
     width: 100%;
-    padding: 0 25px;
     height: 8vh;
   }
 
@@ -135,9 +138,13 @@
     top: -24px;
   }
 
-  /* .join-btn-label {
-   
-  } */
+  .join-btn-label {
+    width: 15vw;
+    font-size: 1.2vw;
+    height: 7vh;
+    margin-left: 0.5vw;
+    outline: none;
+  }
 
   .fade-enter-active,
   .fade-leave-active {

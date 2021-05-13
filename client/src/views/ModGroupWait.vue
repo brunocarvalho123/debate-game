@@ -139,11 +139,11 @@
                           else
                             return;
 
-                          if (this.totalSecs >= 225 && this.totalSecs < 230) {
+                          if (this.totalSecs <= (20*60)-(9 * 60) && this.totalSecs > (20*60)-(11 * 60)) {
                             this.step = 2;
-                          } else if (this.totalSecs >= 220 && this.totalSecs < 225) {
+                          } else if (this.totalSecs <= (20*60)-(11 * 60) && this.totalSecs > (20*60)-(18 * 60)) {
                             this.step = 3;
-                          } else if (this.totalSecs < 220) {
+                          } else if (this.totalSecs < (20*60)-(18 * 60)) {
                             this.step = 4;
                           }
                           const minutes = Math.floor(this.totalSecs/60);
@@ -154,7 +154,7 @@
     data: () => ({
       items: [],
       groupId: '',
-      totalSecs: 2 * 60,
+      totalSecs: 12 * 60,
       timeLeft: '',
       step: 1
     }),

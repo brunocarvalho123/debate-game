@@ -3,9 +3,9 @@
     <div class="header-container">
       <div class="header-buttons">
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
-          mdi-home-outline
+          mdi-timer-sand
         </v-icon>
-        <span class="icon-text">Início</span>
+        <span class="icon-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeader step=4></ProgressHeader>
@@ -95,7 +95,10 @@
       solutions: [],
       roomId: '',
       groupId: '',
-      sent: false
+      sent: false,
+      timeLeft: 1 * 60,
+      totalTime: 1 * 60,
+      timeLeftStr: ''
     }),
     mounted() {
       this.roomId = this.$route.params.roomId;
@@ -116,6 +119,26 @@
           this.$router.push(`/groups/group_representative_res/${this.roomId}/${this.groupId}`);
         }
       });
+
+      setTimeout(() => {if (!this.sent) this.voteOnRep()}, this.totalTime * 1000);
+
+      setInterval(() => {
+                          if (this.timeLeft > 0)
+                            this.timeLeft--;
+                          else
+                            return;
+
+                          if (this.timeLeft >= 225 && this.timeLeft < 230) {
+                            this.step = 2;
+                          } else if (this.timeLeft >= 220 && this.timeLeft < 225) {
+                            this.step = 3;
+                          } else if (this.timeLeft < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.timeLeft/60);
+                          const seconds = this.timeLeft - minutes * 60;
+                          this.timeLeftStr = this.strPadLeft(minutes,seconds);
+                        }, 1000);
     },
     methods: {
       voteOnRep: function(event) {

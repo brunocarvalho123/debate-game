@@ -173,7 +173,7 @@
           if (event.data[0].length > 0) {
             let users = event.data[0].split(';');
             users.pop(); // remove last trash char
-            this.items = users.map((e,idx) => { return {id: idx, name: e}});
+            this.items = users.map((e,idx) => { return {id: idx, name: (e.includes(',') ? e.split(',')[1] : e)}});
           }
 
           if (this.items.length >= 1 && this.isMod) {

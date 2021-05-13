@@ -5,7 +5,7 @@
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-timer-sand
         </v-icon>
-        <span class="icon-text">00:{{getPaddedTime()}}</span>
+        <span class="icon-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeader step=0></ProgressHeader>
@@ -55,7 +55,7 @@
     justify-content: space-between;
     box-shadow: 0 4px 6px -6px #222;
   }
- 
+
   .icon-text {
     margin-left: 10px;
   }
@@ -131,23 +131,41 @@
         console.log(err);
       });
 
-      setInterval(() => {if (this.timeLeft >= 0) this.timeLeft--}, 1000);
 
-      setTimeout(() => {this.startGame()}, this.timeLeft * 1000);
+      setTimeout(() => {this.startGame()}, this.totalTime * 1000);
+
+      setInterval(() => {
+                          if (this.timeLeft > 0)
+                            this.timeLeft--;
+                          else
+                            return;
+
+                          if (this.timeLeft >= 225 && this.timeLeft < 230) {
+                            this.step = 2;
+                          } else if (this.timeLeft >= 220 && this.timeLeft < 225) {
+                            this.step = 3;
+                          } else if (this.timeLeft < 220) {
+                            this.step = 4;
+                          }
+                          const minutes = Math.floor(this.timeLeft/60);
+                          const seconds = this.timeLeft - minutes * 60;
+                          this.timeLeftStr = this.strPadLeft(minutes,seconds);
+                        }, 1000);
     },
     data: () => ({
       items: [],
       roomId: '',
       groupId: '',
-      timeLeft: 10
+      timeLeft: 2 * 60,
+      totalTime: 2 * 60,
+      timeLeftStr: ''
     }),
     methods: {
       startGame: function() {
         this.$router.push(`/groups/individual_solution/${this.roomId}/${this.groupId}`);
       },
-      getPaddedTime: function() {
-        const doubleZero = '00';
-        return doubleZero.substring(0, doubleZero.length - (''+this.timeLeft).length) + ('' + this.timeLeft);
+      strPadLeft: function(minutes,seconds) {
+        return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);
       }
     }
   }

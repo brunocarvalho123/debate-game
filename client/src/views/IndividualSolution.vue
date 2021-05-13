@@ -147,8 +147,8 @@
       groupId: '',
       sent: false,
       threeDots: '.',
-      timeLeft: 3 * 60,
-      totalTime: 3 * 60,
+      timeLeft: 7 * 60,
+      totalTime: 7 * 60,
       timeLeftStr: ''
     }),
     mounted() {

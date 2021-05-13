@@ -41,7 +41,7 @@ function getAllIndexes(arr, val) {
 let groupSolutions = {};
 let groupRep = {};
 
-let groupTime = 2 * 60 * 1000; // 20 minutes
+let groupTime = 20 * 60 * 1000; // 20 minutes
 // room_id:msg_type:user1;user2:is_mod
 
 wss.on('connection', function connection(ws, req) {
