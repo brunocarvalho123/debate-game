@@ -17,14 +17,25 @@
         <span class="icon-text">Ajuda</span>
       </div>
     </div>
-    <div class="instructions-container">
-      <div class="g_rep_container">
-        <p>O vencedor é:</p>
+
+    <div class="father-container">
+      <div class="team-left">
+        <img src="confetti_esq.svg" class="home-img" alt="">
+      </div>
+      <div class="instructions-container middle-container">
+        <div class="g_rep_container">
+        <p id="winner-text">O vencedor é:</p>
         <div class="person-container">
+          <img src="light_crown.svg" class="crown-img" alt="">
           <div class="person">Grupo 2</div>
         </div>
       </div>
+      </div>
+      <div class="team-right">
+        <img src="confetti_right.svg" class="home-img" alt="">
+      </div>
     </div>
+
     <Footer :items="items" label="Participantes"></Footer>
   </div>
 </template>
@@ -53,6 +64,8 @@
 
   .person-container {
     display: flex;
+    position: relative;
+    transform: scale(1.2);
   }
 
   .person {
@@ -73,6 +86,55 @@
     height: 50vh;
     font-size: 1.2vw;
     text-align: center;
+    color: var(--app-main-blue);
+  }
+
+  #winner-text {
+    font-weight: 600;
+    font-size: 1.5vw;
+    margin-bottom: 5vh;
+  }
+
+  .father-container {
+    height: 89.7vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 37.5vw 25vw 37.5vw;
+    align-items: center;
+  }
+
+  .middle-container {
+    width: 25vw;
+  }
+
+  .team-left {
+    width: 34.5vw;
+    margin-left: 3vw;
+    /* background-color: pink; */
+    height: 100%;
+    display: flex;
+    opacity: 50%;
+  }
+
+  .team-right {
+    width: 34.5vw;
+    margin-right: 3vw;
+    /* background-color: pink; */
+    height: 100%;
+    display: flex;
+    opacity: 50%;
+  }
+
+  .team-left img, .team-right img {
+    /* background-color: pink; */
+    position: relative;
+    bottom: 15vh;
+  }
+
+  .crown-img {
+    position: absolute;
+    width: 7vw;
+    top: -6.3vh;
   }
 </style>
 
