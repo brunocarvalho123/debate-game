@@ -154,7 +154,7 @@
     data: () => ({
       items: [],
       groupId: '',
-      totalSecs: 12 * 60,
+      totalSecs: 20 * 60,
       timeLeft: '',
       step: 1
     }),

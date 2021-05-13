@@ -138,6 +138,12 @@
                           const minutes = Math.floor(this.timeLeft/60);
                           const seconds = this.timeLeft - minutes * 60;
                           this.timeLeftStr = this.strPadLeft(minutes,seconds);
+
+                          if (this.timeLeft < this.totalTime/5 && this.timeLeft%2==0) {
+                            this.$refs.timeText.classList.add('timer-text-final');
+                          } else if (this.timeLeft < this.totalTime/5 && this.timeLeft%2==1) {
+                            this.$refs.timeText.classList.remove('timer-text-final');
+                          }
                         }, 1000);
     },
     methods: {

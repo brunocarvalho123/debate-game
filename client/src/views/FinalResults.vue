@@ -25,7 +25,7 @@
       <div class="instructions-container middle-container">
         <div class="g_rep_container">
         <p id="winner-text">O vencedor é:</p>
-        <div class="person-container">
+        <div ref="pCont" class="person-container">
           <img src="light_crown.svg" class="crown-img" alt="">
           <div class="person">Grupo 2</div>
         </div>
@@ -65,7 +65,20 @@
   .person-container {
     display: flex;
     position: relative;
+    transition: transform 500ms ease-in-out;
+    transform: scale(0.2);
+  }
+
+  .person-container-bigger {
     transform: scale(1.2);
+  }
+
+  .person-container-bigger-bigger {
+    transform: scale(1.5);
+  }
+
+  .home-img {
+    visibility: hidden;
   }
 
   .person {
@@ -139,10 +152,15 @@
 </style>
 
 <script>
+  import VueConfetti from 'vue-confetti'
+  import Vue from 'vue'
+
   import Footer from '@/components/Footer.vue';
   import ProgressHeaderFinals from '@/components/ProgressHeaderFinals.vue';
   import http from "../http-common";
   import { bus } from '../main';
+
+  Vue.use(VueConfetti);
 
   export default {
     name: 'FinalResults',
@@ -177,6 +195,37 @@
           this.$router.push(`/game_groups/${this.roomId}`);
         }
       })
+
+
+
+      this.$confetti.start();
+                         this.$confetti.update({
+                          particles: [
+                            {
+                              type: 'rect',
+                            },
+                            {
+                              type: 'circle',
+                            },
+                          ],
+                          defaultSize: 5,
+                          defaultColors: [
+                            '#0f2b46',
+                            '#f46f52',
+                            '#d2e1e8'
+                          ],
+                          });
+
+
+      setTimeout(() => { this.$refs.pCont.classList.add('person-container-bigger-bigger'); }, 100);
+      setTimeout(() => { this.$refs.pCont.classList.remove('person-container-bigger-bigger');
+                         this.$refs.pCont.style.transition = 'transform 200ms ease-in-out';
+                         this.$refs.pCont.classList.add('person-container-bigger');
+                         }, 600);
+
+      setTimeout(() => {
+        this.$confetti.stop();
+      }, 5000);
     },
     data: () => ({
       isMod: false,

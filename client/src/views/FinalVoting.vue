@@ -5,7 +5,7 @@
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-timer-sand
         </v-icon>
-        <span class="icon-text">{{timeLeftStr}}</span>
+        <span ref="timeText" class="icon-text timer-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeaderFinals step=1></ProgressHeaderFinals>
@@ -132,6 +132,12 @@
                           const minutes = Math.floor(this.timeLeft/60);
                           const seconds = this.timeLeft - minutes * 60;
                           this.timeLeftStr = this.strPadLeft(minutes,seconds);
+
+                          if (this.timeLeft < this.totalTime/5 && this.timeLeft%2==0) {
+                            this.$refs.timeText.classList.add('timer-text-final');
+                          } else if (this.timeLeft < this.totalTime/5 && this.timeLeft%2==1) {
+                            this.$refs.timeText.classList.remove('timer-text-final');
+                          }
                         }, 1000);
     },
     data: () => ({
@@ -146,9 +152,7 @@
     }),
     methods: {
       goFinalResults: function() {
-        if (this.isMod) {
-          this.$router.push(`/final_results/${this.roomId}`);
-        }
+        this.$router.push(`/final_results/${this.roomId}`);
       },
       strPadLeft: function(minutes,seconds) {
         return (new Array(2+1).join('0')+minutes).slice(-2) + ':' + (new Array(2+1).join('0')+seconds).slice(-2);

@@ -63,4 +63,15 @@
     grid-template-rows: 0.1fr 1fr;
     height: 100vh;
   }
+
+  .timer-text {
+    color: var(--app-main-blue);
+    transition: all .4s ease-in;
+    font-size: 1.6vw;
+  }
+
+  .timer-text-final {
+    color: red;
+    font-size: 1.8vw;
+  }
 </style>
