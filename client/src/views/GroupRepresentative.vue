@@ -47,6 +47,7 @@
 
   .person-container {
     display: flex;
+    margin: 0 auto;
   }
 
   .person {
@@ -59,7 +60,8 @@
 
   .person:hover {
     cursor: pointer;
-    box-shadow: 1px 1px 8px 1px #888888;
+    /* box-shadow: 1px 1px 8px 1px #888888; */
+    box-shadow: 6px 6px 18px -4px rgb(0, 0, 0, 40%);
   }
 
   .selected-person {

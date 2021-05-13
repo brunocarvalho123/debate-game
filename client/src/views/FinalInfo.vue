@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="instructions-container">
-      <div class="instructions-grid">
+      <div class="instructions-grid align-grid">
         <div class="instructions-text-cell">
           <div class="text-cell-number hide-stuff">0</div>
           <div>Bem vindos à sala dos debates finais!</div>
@@ -126,13 +126,17 @@
     margin-right: 1.3vw;
   }
 
-  .button {
+  /* .button {
     position: relative;
     bottom: -9vh;
-  }
+  } */
 
   .hide-stuff {
     visibility: hidden;
+  }
+
+  .align-grid {
+    margin: 5vh 0;
   }
 </style>
 

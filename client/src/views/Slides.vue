@@ -8,11 +8,11 @@
         <span class="icon-text">Início</span>
       </div>
       <div class="header-label">
-        <v-icon size="2.5vw" :disabled="isMod == false" style="margin-top: -5px;" class="d-icon" @click="previousSlide">
+        <v-icon size="2.5vw" v-if="isMod" style="margin-top: -5px;" class="d-icon" @click="previousSlide">
           mdi-arrow-left-circle-outline
         </v-icon>
         Slide {{currentSlide}}/{{totalSlides}}
-        <v-icon v-if="currentSlide < totalSlides" :disabled="isMod == false" size="2.5vw" style="margin-top: -5px;" class="d-icon" @click="nextSlide">
+        <v-icon v-if="(currentSlide < totalSlides) && isMod" size="2.5vw" style="margin-top: -5px;" class="d-icon" @click="nextSlide">
           mdi-arrow-right-circle-outline
         </v-icon>
         <span class="continue-button" v-else-if="isMod" @click="nextPage">

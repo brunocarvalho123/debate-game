@@ -24,7 +24,7 @@
       <DeButton class="button" label="Iniciar" @pressed="sendReady" :disabled="!ready"></DeButton>
     </div>
 
-    <v-dialog v-model="infoDialog" width="40vw">
+    <v-dialog v-model="infoDialog" width="47vw">
       <div class="dialog-container">
         <div class="info-text">
           <p>A sua sala de jogo foi criada com sucesso!</p>
@@ -97,7 +97,7 @@
     background-color: white;
     border-radius: 10px;
     border: 2px solid var(--app-detail);
-    padding: 1.3vw;
+    padding: 8vh 0;
     text-align: center;
     color: var(--app-main-blue);
     font-size: 1.2vw;

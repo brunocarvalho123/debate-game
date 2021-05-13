@@ -17,23 +17,28 @@
         <span class="icon-text">Ajuda</span>
       </div>
     </div>
-    <div class="mid-div">
+    <div class="instructions-container">
       <div class="group-grid">
         <div v-for="groups in matches" v-bind:key="groups.id" class="match-cell">
           <div class="group-cell">
-            <div class="group-header">{{groups[0].name}}</div>
-            <div class="group-body">
-              <span v-for="member in groups[0].members" v-bind:key="member.id" class="member-span">
-                {{items[member.id].name}}
-              </span>
+            <div class="group-container">
+              <div class="group-header">{{groups[0].name}}</div>
+              <div class="group-body">
+                <span v-for="member in groups[0].members" v-bind:key="member.id" class="member-span">
+                  {{items[member.id].name}}
+                </span>
+              </div>
             </div>
             <div class="vs-sign">VS</div>
-            <div class="group-header">{{groups[1].name}}</div>
-            <div class="group-body">
-              <span v-for="member in groups[1].members" v-bind:key="member.id" class="member-span">
-                {{items[member.id].name}}
-              </span>
+            <div class="group-container">
+              <div class="group-header">{{groups[1].name}}</div>
+              <div class="group-body">
+                <span v-for="member in groups[1].members" v-bind:key="member.id" class="member-span">
+                  {{items[member.id].name}}
+                </span>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -75,7 +80,6 @@
     text-decoration: underline;
   }
   .group-grid {
-    margin-top: -10vh;
     display: inline-grid;
     grid-auto-flow: column;
   }
@@ -83,7 +87,6 @@
     color: var(--app-main-blue);
     font-size: 1.2vw;
     font-weight: 350;
-    padding-bottom: 6vh;
     padding-left: 4vw;
     padding-right: 4vw;
     width: 30vw;
@@ -92,24 +95,24 @@
   .group-header {
     background-color: var(--app-secondary-blue);
     color: var(--app-main-blue);
-    border-radius: 10px 10px 0px 0px;
-    border: 1px solid var(--app-main-blue);
+    border-radius: 15px 15px 0px 0px;
+    /* border: 1px solid var(--app-main-blue); */
     text-align: center;
     font-size: 1.6vw;
-    font-weight: 450;
-    padding-top: 0.5vh;
-    padding-bottom: 0.5vh;
+    font-weight: 600;
+    padding: 1vh 0;
   }
   .group-body {
-    border-radius: 0px 0px 10px 10px;
-    border: 1px solid var(--app-main-blue);
+    border-radius: 0px 0px 15px 15px;
+    border: 2px solid var(--app-secondary-blue);
     display: grid;
     grid-template-columns: 1fr 1fr;
     font-size: 1.2vw;
-    font-weight: 450;
+    font-weight: 600;
     justify-content: center;
     justify-items: center;
     align-content: center;
+    padding: 3vh 0;
   }
   .member-span {
     padding: 0.8vw 0vw 0.8vw 0vw;
@@ -118,9 +121,13 @@
     color: var(--app-accent);
     font-size: 1.8vw;
     font-weight: 550;
-    padding-top: 1.5vh;
-    padding-bottom: 1.5vh;
+    margin: 2.5vh 0;
     text-align: center;
+  }
+
+  .group-container {
+    box-shadow: 6px 6px 18px -4px rgb(0, 0, 0, 40%);
+    border-radius: 15px;
   }
 </style>
 

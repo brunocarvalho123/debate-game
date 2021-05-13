@@ -74,7 +74,7 @@
     text-align: center;
     align-items: center;
     position: relative;
-    box-shadow: 6px 6px 18px -4px rgb(0, 0, 0, 60%)
+    box-shadow: 6px 6px 18px -4px rgb(0, 0, 0, 60%);
   }
   .solution-div:hover {
     cursor: pointer;
@@ -114,7 +114,7 @@
   }
 
   .solution-img {
-    width: 37.7vw;
+    width: 39.7vw;
     margin-right: 10vw;
     position: absolute;
     top: -10px;

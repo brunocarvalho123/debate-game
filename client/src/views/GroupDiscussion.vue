@@ -17,12 +17,15 @@
         <span class="icon-text">Ajuda</span>
       </div>
     </div>
-    <div class="mid-div">
+    <div class="solutions-grid">
       <div v-for="solution in solutions" v-bind:key="solution.id" class="coiso-div">
-        <div class="paper-sticker"></div>
+        <div class="paper-sticker">
+          <img src="sticker_img.svg" class="sticker-img" alt="sticker img">
+        </div>
         <div v-if="solution.checked" class="check-sticker"></div>
         <div class="solution-div" :solution-id="solution.id">
           <span class="text-span">{{solution.text}}</span>
+          <img src="note_img.svg" class="solution-img" alt="texture img">
         </div>
       </div>
     </div>
@@ -31,74 +34,87 @@
 </template>
 
 <style scoped>
-  .main-div {
-    display: grid;
-    grid-template-rows: 0.1fr 1fr;
-    height: 100vh;
-  }
-  .top-div {
-    height: 11vh;
-    display: flex;
-    color: var(--app-main-blue);
-    font-size: 1.6vw;
-    font-weight: 450;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px -6px #222;
-  }
-  .top-label {
-    margin: 4vh;
-  }
   .icon-text {
     margin-left: 10px;
   }
-  .top-buttons {
-    margin: 4vh;
-  }
+
   .b-icon {
     margin-bottom: 0.2vh;
   }
 
-  .mid-div {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    row-gap: 8vh;
-    column-gap: 8vw;
-    margin: 12vh auto auto auto;
+  .solutions-grid {
+    /* display: grid; */
+    /* grid-template-columns: 1fr 1fr 1fr; */
+    /* row-gap: 8vh;
+    column-gap: 8vw; */
+    display: flex;
+    margin: 0 auto;
+    /* height: 81.7vh; */
+    height: 81.7vh;
+    width: 84.3vw;
+    /* align-self: center; */
+    justify-content: center;
+    align-items: center;
   }
+
   .solution-div {
     display: flex;
     overflow: hidden;
-    width: 25vw;
-    height: 25vh;
-    background-color: aquamarine;
-    font-size: 1.1vw;
+    width: 37vw;
+    height: 39.1vh;
+    /* background-color: aquamarine; */
+    font-size: 2.1vw;
     justify-content: center;
     text-align: center;
     align-items: center;
+    position: relative;
+    box-shadow: 6px 6px 18px -4px rgb(0, 0, 0, 60%);
+  }
+
+  .solution-div:hover {
+    cursor: pointer;
   }
   .paper-sticker {
-    height: 5vh;
-    width: 10vw;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
     position: absolute;
-    margin-top: -2.5vh;
+    margin-top: -3.5vh;
+    z-index: 1;
   }
+
+  .sticker-img {
+    height: 8vh;
+    width: 17vw;
+  }
+
   .check-sticker {
-    height: 5vh;
-    width: 5vh;
-    background-color: green;
+    height: 7vh;
+    width: 6.3vh;
     position: absolute;
     margin-top: -2.5vh;
-    margin-left: 25vw;
+    margin-left: 21vw;
   }
+
   .coiso-div {
     display: flex;
     justify-content: center;
+    transform: scale(0.9);
+    transform-origin: 25% 30%;
+    transition: transform 200ms ease-out;
   }
+
   .text-span {
     overflow: hidden;
-    margin-left: 6%;
-    margin-right: 6%;
+    margin: 0 10% 0 14%;
+    z-index: 1;
+    color: var(--app-main-blue);
+  }
+
+  .solution-img {
+    width: 63.7vw;
+    margin-right: 10vw;
+    position: absolute;
+    top: -10px;
+    left: -8px;
   }
 
 </style>
@@ -121,8 +137,8 @@
       roomId: '',
       groupId: '',
       sent: false,
-      timeLeft: 1 * 10,
-      totalTime: 1 * 10,
+      timeLeft: 1 * 1000,
+      totalTime: 1 * 1000,
       timeLeftStr: ''
     }),
     mounted() {
