@@ -22,7 +22,7 @@
   }
   .more-opaco {
     opacity: 1;
-    font-weight: 600;
+    font-weight: 700;
   }
   .risco {
     background-color: var(--app-main-blue);

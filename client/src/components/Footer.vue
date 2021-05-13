@@ -37,7 +37,7 @@
     padding-left: 2.6vw;
     padding-right: 2.6vw;
     font-size: 1.2vw;
-    font-weight: 350;
+    /* font-weight: 350; */
     border-color: white;
     border-style: solid;
     border-width: 0px 3px 0px 0px;
@@ -46,7 +46,7 @@
     background-color: var(--app-main-blue);
     color: white;
     font-size: 1.4vw;
-    font-weight: 550;
+    font-weight: 600;
     padding-left: 2.5vw;
     padding-right: 3.5vw;
     border-width: 0px;

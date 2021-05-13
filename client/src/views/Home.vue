@@ -14,7 +14,7 @@
 
       <div class="div-inline-flex">
         <div class="join-btn-container">
-          <v-icon size="2vw" class="kb-icon">mdi-keyboard</v-icon>
+          <v-icon size="2.5vw" class="kb-icon" color="var(--app-main-blue)">mdi-keyboard</v-icon>
           <input class="join-btn-label" type="text" placeholder="Insira o código de acesso" size="25" v-model="accessCode" @focus="focusInput" name="asdasds">
 
           <!-- <v-text-field class="join-btn-label" prepend-inner-icon="mdi-keyboard" color="var(--org-blue)" label="Insira o código de acesso"  @focus="focusInput"></v-text-field> -->
@@ -87,7 +87,7 @@
     height: 8vh;
     border-radius: 10px;
     border: 2px solid var(--app-main-blue);
-    font-size: 1.5vw;
+    font-size: 1.3vw;
     font-weight: 500;
     margin-bottom: 25px;
   }
@@ -113,9 +113,10 @@
   }
   .kb-icon {
     margin-left: 0.5vw;
+    /* margin-right: 0.5vw; */
   }
   .home-img {
-    width: 26vw;
+    width: 33vw;
     margin-right: 10vw;
   }
   .div-inline-flex {
@@ -123,11 +124,14 @@
   }
 
   .join-btn-container {
-    border: solid 1px black;
+    /* border: solid 1px black; */
     border-radius: 10px;
     border: 2px solid var(--app-main-blue);
     width: 100%;
     height: 8vh;
+    display: flex;
+    justify-content: center;
+    color: var(--app-main-blue);
   }
 
   .container-hr {

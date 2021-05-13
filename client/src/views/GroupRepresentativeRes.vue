@@ -23,7 +23,7 @@
           <p>O porta voz escolhido foi:</p>
           <div class="person">{{repName}}</div>
         </div>
-        <p>Dentro de um minuto vão começar os debates finais.<br>Podem aproveitar este tempo para preparar o discurso do porta voz.</p>
+        <p>Dentro de momentos vão começar os debates finais.<br>Podem aproveitar este tempo para preparar o discurso do porta voz.</p>
       </div>
 
     </div>
