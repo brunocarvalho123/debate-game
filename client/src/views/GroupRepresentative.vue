@@ -5,7 +5,7 @@
         <v-icon size="2.5vw" style="margin-top: -5px;" class="b-icon" color="var(--app-main-blue)">
           mdi-timer-sand
         </v-icon>
-        <span class="icon-text">{{timeLeftStr}}</span>
+        <span ref="timeText" class="icon-text timer-text">{{timeLeftStr}}</span>
       </div>
       <div class="header-label">
         <ProgressHeader step=4></ProgressHeader>

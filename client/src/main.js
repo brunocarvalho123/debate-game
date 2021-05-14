@@ -42,6 +42,10 @@ const app = new Vue({
 
     }
 
+    setInterval(() => {
+      this.$connection.send('teste');
+    }, 5000);
+
     Vue.prototype.$connection.onopen = function(event) {
       console.log(event)
       console.log("Successfully connected to the websocket server...")
