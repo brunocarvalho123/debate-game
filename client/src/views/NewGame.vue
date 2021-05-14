@@ -18,7 +18,7 @@
 
 
     <div class="father-container">
-      <div class="team-left">
+      <div class="team-left-1">
         <img src="pencils.svg" class="home-img" alt="">
       </div>
       <div class="instructions-container middle-container">
@@ -27,7 +27,7 @@
           <DeButton class="button" label="Criar jogo" @pressed="createRoom"></DeButton>
         </div>
       </div>
-      <div class="team-right">
+      <div class="team-right-1">
         <img src="books.svg" class="home-img" alt="">
       </div>
     </div>
@@ -66,7 +66,7 @@
     width: 40vw;
   }
 
-  .team-left {
+  .team-left-1 {
     width: 19vw;
     margin-left: 6vw;
     /* background-color: pink; */
@@ -76,7 +76,7 @@
     opacity: 50%;
   }
 
-  .team-right {
+  .team-right-1 {
     width: 19vw;
     margin-right: 6vw;
     /* background-color: pink; */
